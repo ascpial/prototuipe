@@ -11,11 +11,30 @@
   flex-direction: row;
 }
 
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  src: url(./icons.woff) format('woff');
+}
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
 :root {
   font-family: 'Roboto', sans-serif;
   --md-ref-typeface-brand: 'sans-serif';
   --md-ref-typeface-plain: system-ui;
-  --md-icon-font: 'Material Symbols Rounded';
+  --md-icon-font: 'Material Symbols Outlined';
   --pill-size: 40px;
 }
 

@@ -17,7 +17,7 @@ export class TerminalScreen extends ScreenRenderer {
       this.buffer.push(new Array(this.size.width));
       for (var j = 0; j < this.size.width; j++) {
         this.screen[i][j] = {
-          charId: 0,
+          charId: 32,
           fg: COLOR_NAMES.white,
           bg: COLOR_NAMES.black,
         };
@@ -113,7 +113,7 @@ export function bimgExport(screen, width, height, x, y) {
   }
   let img = {"0": data};
   img.version = "1.0.0";
-  img.creator = "prototuip";
+  img.creator = "prototuipe";
   img.width = width;
   img.height = height;
   img.animated = false;
