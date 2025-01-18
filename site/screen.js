@@ -77,8 +77,8 @@ export class TerminalScreen extends ScreenRenderer {
         }
       }
     }
-    document.getElementById('debug').style.backgroundColor = "#0f0";
-    setTimeout(() => { document.getElementById('debug').style.backgroundColor = null; }, 100)
+    // document.getElementById('debug').style.backgroundColor = "#0f0";
+    // setTimeout(() => { document.getElementById('debug').style.backgroundColor = null; }, 100)
   }
 
   clearBuffer() {
