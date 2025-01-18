@@ -1,0 +1,197 @@
+@import "./dark.css";
+@import "./light.css";
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+:root {
+  font-family: 'Roboto', sans-serif;
+  --md-ref-typeface-brand: 'sans-serif';
+  --md-ref-typeface-plain: system-ui;
+  --md-icon-font: 'Material Symbols Rounded';
+  --pill-size: 40px;
+}
+
+body {
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+#tools_panel {
+  flex-basis: 300pt;
+  flex-grow: 0;
+  flex-shrink: 0;
+  background-color: var(--md-sys-color-surface);
+  padding: 10px;
+  height: calc(100vh - 20px);
+  display: flex;
+  flex-direction: column;
+  z-index: 99;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    flex-direction: column;
+  }
+  #tools_panel {
+    flex-basis: 100pt;
+  }
+}
+
+#screen_panel {
+  flex-grow: 1;
+  flex-shrink: 1;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#screen_panel canvas {
+  image-rendering: pixelated;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.left {
+  flex-grow: 1;
+}
+.selected-tool {
+  --md-filled-tonal-icon-button-container-color: var(--md-sys-color-primary);
+}
+.selected-tool md-icon {
+  color: var(--md-sys-color-on-primary)
+}
+.right {
+  flex-grow: 0;
+}
+
+.color-picker {
+  margin-top: 10px;
+}
+.color-picker .left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+table.colors md-icon-button {
+  width: 50px;
+  height: 50px;
+}
+
+table.colors {
+  border: none;
+  border-collapse: collapse;
+  border-radius: calc(var(--pills-width) * 0.3 / 8);
+  overflow: hidden;
+  width: var(--pills-width);
+}
+table.colors tr {
+  height: calc(var(--pills-width) / 8);
+}
+table.colors td {
+  padding: 0px;
+}
+table.colors md-filled-icon-button {
+  --md-filled-icon-button-container-shape: 0px;
+  --md-filled-icon-button-container-width: calc(var(--pills-width) / 8);
+  --md-filled-icon-button-container-height: calc(var(--pills-width) / 8);
+  --md-filled-icon-button-leading-space: 0px;
+}
+
+.chars {
+  margin-top: 10px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 12px);
+  height: calc(100% - 230px);
+  background-color: var(--md-sys-color-surface-container-lowest);
+  flex-wrap: wrap;
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 6px;
+}
+
+.chars #chars {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+img.char {
+  width: 18px;
+  height: 27px;
+  image-rendering: pixelated;
+}
+
+.sizes-chooser {
+  display: flex;
+  flex-direction: column;
+}
+.size {
+  display: flex;
+  align-items: center;
+}
+.size-settings {
+  display: flex;
+  flex-direction: column;
+}
+md-filled-text-field.small {
+  --md-filled-text-field-input-text-size: 0.75rem;
+  --md-filled-text-field-input-label-text-size: 0.75rem;
+  --md-filled-text-field-top-space: 4px;
+  --md-filled-text-field-bottom-space: 4px;
+  --md-filled-text-field-trailing-space: 4px;
+  --md-filled-text-field-leading-space: 6px;
+  width: 60px;
+}
+
+md-filled-select.small {
+  --md-filled-select-text-field-input-text-size: 0.75rem;
+  --md-filled-select-text-field-supporting-text-size: 0.75rem;
+  --md-filled-select-text-field-label-text-size: 0.75rem;
+  --md-filled-field-input-label-text-size: 0.75rem;
+  --md-filled-field-top-space: 4px;
+  --md-filled-field-bottom-space: 4px;
+  --md-filled-field-trailing-space: 4px;
+  --md-filled-field-leading-space: 6px;
+  width: 120px;
+  /* height: 32px; */
+}
+md-filled-select.small::part(menu) {
+  --md-menu-item-label-text-size: 0.75rem;
+  --md-menu-item-top-space: 4px;
+  --md-menu-item-bottom-space: 4px;
+  /* --md-menu-item-trailing-space: 4px; */
+  /* --md-menu-item-leading-space: 6px; */
+}
+
+.action_label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}

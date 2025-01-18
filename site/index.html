@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Prototuipe</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./m3bundle.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
+  <script src="./code.js" type="module"></script>
+  <!-- Remove favicon request -->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+
+<body>
+  <div id="screen_panel">
+    <canvas id="screen" style="visibility: hidden"></canvas>
+  </div>
+  <!-- <canvas id="cache"></canvas> -->
+
+  <div id="tools_panel">
+    <div class="row">
+      <div class="left">
+        <div style="width: 10px; height: 10px; position: absolute;" id="debug"></div>
+        <md-filled-tonal-icon-button id="tool_place" class="selected-tool">
+          <md-icon>draw</md-icon>
+        </md-filled-tonal-icon-button>
+        <md-filled-tonal-icon-button id="tool_input_text">
+          <md-icon>text_fields</md-icon>
+        </md-filled-tonal-icon-button>
+        <md-filled-tonal-icon-button id="tool_select">
+          <md-icon>arrow_selector_tool</md-icon>
+        </md-filled-tonal-icon-button>
+        <md-filled-tonal-icon-button id="tool_draw">
+          <md-icon>brush</md-icon>
+        </md-filled-tonal-icon-button>
+      </div>
+      <div class="right">
+        <md-filled-tonal-icon-button id="settings" onclick="document.getElementById('properties').show()">
+          <md-icon>settings</md-icon>
+        </md-filled-tonal-icon-button>
+      </div>
+    </div>
+    <div class="color-picker row">
+      <div class="left">
+        <md-icon-button id="fg_button">
+          <md-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+              <path style="fill: var(--foreground-color)"
+                d="M 120,0 C 108.66667,0 99.166667,-3.8333333 91.5,-11.5 83.833333,-19.166667 80,-28.666667 80,-40 v -80 c 0,-11.33333 3.833333,-20.83333 11.5,-28.5 7.666667,-7.66667 17.16667,-11.5 28.5,-11.5 h 720 c 11.33333,0 20.83333,3.83333 28.5,11.5 7.66667,7.66667 11.5,17.16667 11.5,28.5 v 80 c 0,11.333333 -3.83333,20.833333 -11.5,28.5 C 860.83333,-3.8333333 851.33333,0 840,0 Z" />
+              <path
+                d="m 285,-280 c -15.33333,0 -27.5,-6.5 -36.5,-19.5 -9,-13 -10.83333,-26.83333 -5.5,-41.5 l 176,-469 c 3.33333,-9.33333 9,-16.66667 17,-22 8,-5.33333 16.66667,-8 26,-8 h 36 c 10,0 18.83333,2.66667 26.5,8 7.66667,5.33333 13.16667,12.66667 16.5,22 l 177,470 c 5.33333,14.66667 3.5,28.33333 -5.5,41 -9,12.66667 -21.16667,19 -36.5,19 -9.33333,0 -18,-2.66667 -26,-8 -8,-5.33333 -13.66667,-12.66667 -17,-22 L 594,-424 H 368 l -41,115 c -3.33333,9.33333 -8.83333,16.5 -16.5,21.5 -7.66667,5 -16.16667,7.5 -25.5,7.5 z m 111,-224 h 168 l -82,-232 h -4 z" />
+            </svg>
+          </md-icon>
+        </md-icon-button>
+      </div>
+      <table class="colors" class="right" style="--pills-width: 320px;">
+        <tr>
+          <td><md-filled-icon-button id="fg0"><md-icon>check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg1"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg2"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg3"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg4"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg5"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg6"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg7"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+        </tr>
+        <tr>
+          <td><md-filled-icon-button id="fg8"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg9"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg10"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg11"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg12"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg13"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg14"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg15"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+        </tr>
+      </table>
+    </div>
+    <div class="color-picker row">
+      <div class="left">
+        <md-icon-button id="bg_button">
+          <md-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+              <path style="fill: var(--background-color)" d="M 80,0 V -160 H 880 V 0 Z" />
+              <path
+                d="m 247,-904 57,-56 343,343 c 15.33333,15.33333 23,34.33333 23,57 0,22.66667 -7.66667,41.66667 -23,57 l -190,190 c -15.33333,15.33333 -34.33333,23 -57,23 -22.66667,0 -41.66667,-7.66667 -57,-23 L 153,-503 c -15.33333,-15.33333 -23,-34.33333 -23,-57 0,-22.66667 7.66667,-41.66667 23,-57 l 190,-191 z m 153,153 -191,191 h 382 z m 360,471 c -22,0 -40.83333,-7.83333 -56.5,-23.5 C 687.83333,-319.16667 680,-338 680,-360 c 0,-14 4.16667,-29 12.5,-45 8.33333,-16 17.5,-31 27.5,-45 6,-8 12.33333,-16.33333 19,-25 6.66667,-8.66667 13.66667,-17 21,-25 7.33333,8 14.33333,16.33333 21,25 6.66667,8.66667 13,17 19,25 10,14 19.16667,29 27.5,45 8.33333,16 12.5,31 12.5,45 0,22 -7.83333,40.83333 -23.5,56.5 -15.66667,15.66667 -34.5,23.5 -56.5,23.5 z" />
+            </svg>
+          </md-icon>
+        </md-icon-button>
+      </div>
+      <table class="colors" class="right" style="--pills-width: 320px;">
+        <tr>
+          <td><md-filled-icon-button id="bg0"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg1"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg2"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg3"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg4"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg5"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg6"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg7"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+        </tr>
+        <tr>
+          <td><md-filled-icon-button id="bg8"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg9"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg10"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg11"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg12"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg13"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg14"><md-icon
+                style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg15"><md-icon>check</md-icon></md-filled-icon-button></td>
+        </tr>
+      </table>
+    </div>
+    <!-- <md-elevated-button>Elevated</md-elevated-button> -->
+    <div class="chars">
+      <div id="chars">
+      </div>
+    </div>
+  </div>
+
+  <md-dialog id="properties">
+    <div slot="headline">
+      <label>Properties</label>
+    </div>
+    <div class="sizes-chooser" slot="content">
+      <!-- <h3> Sketch </h3> -->
+      <!-- <md-outlined-text-field label="Sketch name" value="Hello world"> -->
+      <!-- </md-outlined-text-field> -->
+
+      <h3>Screen size</h3>
+      <md-outlined-select>
+        <md-select-option selected value="computer">
+          <div slot="headline">Computer</div>
+        </md-select-option>
+        <md-select-option value="pocket">
+          <div slot="headline">Pocket</div>
+        </md-select-option>
+        <md-select-option value="turtle">
+          <div slot="headline">Turtle</div>
+        </md-select-option>
+        <md-select-option value="monitor">
+          <div slot="headline">Monitor</div>
+        </md-select-option>
+        <md-select-option value="custom">
+          <div slot="headline">Custom</div>
+        </md-select-option>
+      </md-outlined-select>
+      <div class="horizontal">
+        <md-outlined-text-field placeholder="Width" type="number" style="width: 120px; padding-top: 8px;">
+        </md-outlined-text-field>
+        <md-outlined-text-field placeholder="Height" type="number"
+          style="width: 120px; padding-top: 8px; padding-left: 8px;">
+        </md-outlined-text-field>
+        <md-outlined-select style="padding-top: 8px; padding-left: 8px; min-width: 110px;" disabled>
+          <md-select-option value="0.5">
+            <div slot="headline"> &times; 0.5 </div>
+          </md-select-option>
+          <md-select-option selected value="1">
+            <div slot="headline"> &times; 1 </div>
+          </md-select-option>
+          <md-select-option value="1.5">
+            <div slot="headline"> &times; 1.5 </div>
+          </md-select-option>
+          <md-select-option value="2">
+            <div slot="headline"> &times; 2 </div>
+          </md-select-option>
+          <md-select-option value="2.5">
+            <div slot="headline"> &times; 2.5 </div>
+          </md-select-option>
+          <md-select-option value="3">
+            <div slot="headline"> &times; 3 </div>
+          </md-select-option>
+          <md-select-option value="3.5">
+            <div slot="headline"> &times; 3.5 </div>
+          </md-select-option>
+          <md-select-option value="4">
+            <div slot="headline"> &times; 4 </div>
+          </md-select-option>
+          <md-select-option value="4.5">
+            <div slot="headline"> &times; 4.5 </div>
+          </md-select-option>
+          <md-select-option value="5">
+            <div slot="headline"> &times; 5 </div>
+          </md-select-option>
+        </md-outlined-select>
+      </div>
+      <h3 style="padding-top: 8px;"> Appearance </h3>
+      <label class="action_label">
+        <md-checkbox touch-target="wrapper"></md-checkbox>
+        Paint borders
+      </label>
+
+      <h3 style="padding-top: 8px;"> Color palette </h3>
+
+      <table class="colors" class="right" style="--pills-width: 366px;">
+        <tr>
+          <td><md-filled-icon-button id="p0"></td>
+          <td><md-filled-icon-button id="p1"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p2"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p3"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p4"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p5"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p6"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p7"></md-filled-icon-button></td>
+        </tr>
+        <tr>
+          <td><md-filled-icon-button id="p8"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p9"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p10"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p11"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p12"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p13"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p14"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p15"></md-filled-icon-button></td>
+        </tr>
+      </table>
+    </div>
+    <div slot="actions">
+      <md-text-button>Cancel</md-text-button>
+      <md-text-button>Apply</md-text-button>
+    </div>
+  </md-dialog>
+</body>
+
+</html>

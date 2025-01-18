@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@material/material-color-utilities": "^0.3.0",
+    "@material/web": "^2.2.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "rollup": "^4.28.1"
+  }
+}
