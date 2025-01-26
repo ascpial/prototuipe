@@ -725,11 +725,11 @@ function addChars() {
 
 function load() {
   addChars();
+  // screen.drawText("Hello world!", 0, 0, COLOR_NAMES.orange);
+  // screen.drawChar(8, 0, 1);
+  // screen.drawChar(8, 1, 1);
+  // screen.commitBuffer();
   screen.render();
-  screen.drawText("Hello world!", 0, 0, COLOR_NAMES.orange);
-  screen.drawChar(8, 0, 1);
-  screen.drawChar(8, 1, 1);
-  screen.commitBuffer();
   render();
 };
 
