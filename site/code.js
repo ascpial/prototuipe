@@ -1033,6 +1033,8 @@ function saveProperties() {
   bufferScreen.canvas.height = screen.canvas.height;
   screen.fixEmptyChars();
   screen.save();
+  screen.ctx.fillStyle = screen.colors[COLOR_NAMES.black];
+  screen.ctx.fillRect(0, 0, screen.canvas.width, screen.canvas.height);
   screen.render();
   make_fit();
   render();
