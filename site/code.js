@@ -1,4 +1,4 @@
-import { SIZES, FONT, ScreenRenderer, COLOR_NAMES, DEFAULT_COLORS } from "./renderer.js";
+import { SIZES, FONT, ScreenRenderer, COLOR_NAMES, DEFAULT_COLORS, SIZE_TYPES } from "./renderer.js";
 import { Hct, argbFromHex } from './utils.js';
 import { TerminalScreen, bimgExport, bimgImport } from "./screen.js";
 
@@ -572,7 +572,15 @@ let draw = {
 let size = SIZES.computer;
 // let size = {width: 100, height: 5};
 
-let screen = new TerminalScreen(size, undefined, 2);
+let screen;
+let loadingId = "entry"
+let data = JSON.parse(window.localStorage.getItem('s' + loadingId));
+if (data == null) {
+  screen = new TerminalScreen(size, undefined, 2, loadingId);
+} else {
+  screen = TerminalScreen.unserialise(data, loadingId, 2);
+  console.log(screen.get(2, 0))
+}
 screen.interaction = { mode: MODES.Idle };
 screen.fgColor = 0;
 screen.bgColor = 15;
@@ -683,9 +691,12 @@ function updatePills() {
     } else {
       elt.children[0].style.setProperty("color", "#000");
     }
-    elt = document.getElementById("p" + i);
-    elt.style.setProperty("--md-filled-icon-button-container-color", screen.colors[i]);
-    elt.style.setProperty("--md-filled-icon-button-disabled-container-color", screen.colors[i]);
+    // elt = document.getElementById("p" + i);
+    // elt.style.setProperty("--md-filled-icon-button-container-color", screen.colors[i]);
+    // elt.style.setProperty("--md-filled-icon-button-disabled-container-color", screen.colors[i]);
+    // elt = document.getElementById("gp" + i);
+    // elt.style.setProperty("--md-filled-icon-button-container-color", screen.colors[i]);
+    // elt.style.setProperty("--md-filled-icon-button-disabled-container-color", screen.colors[i]);
   }
   updateCSSColor();
 }
@@ -714,6 +725,7 @@ function addChars() {
 
 function load() {
   addChars();
+  screen.render();
   screen.drawText("Hello world!", 0, 0, COLOR_NAMES.orange);
   screen.drawChar(8, 0, 1);
   screen.drawChar(8, 1, 1);
@@ -925,7 +937,7 @@ window.addEventListener("paste", (e) => {
   let rawdata = e.clipboardData.getData('text/plain');
   try {
     let data = JSON.parse(rawdata);
-    let pos = screen.interaction.pos ? screen.interaction.pos : {x: 0, y: 0};
+    let pos = screen.interaction.pos ? screen.interaction.pos : { x: 0, y: 0 };
     setTool(TOOLS.Select);
     let pastedScreen = bimgImport(data);
     pastedScreen.commitBuffer();
@@ -933,10 +945,10 @@ window.addEventListener("paste", (e) => {
       mode: MODES.Selected,
       pos: pos,
       point1: pos,
-      point2: {x: pos.x+pastedScreen.size.width-1, y: pos.y+pastedScreen.size.height-1},
+      point2: { x: pos.x + pastedScreen.size.width - 1, y: pos.y + pastedScreen.size.height - 1 },
       data: pastedScreen.screen,
       area: pastedScreen.canvas,
-      offset: {x: 0, y:0},
+      offset: { x: 0, y: 0 },
     }
     render();
   } catch {
@@ -949,3 +961,82 @@ if (FONT.complete) {
 } else {
   FONT.onload = load;
 }
+
+function selectSizeType(type) {
+  console.log(type)
+  let sizeSelect = document.getElementById("size_select");
+  sizeSelect.childNodes.forEach((elt) => { elt.selected = elt.value == type });
+  let width = document.getElementById("size_width");
+  let height = document.getElementById("size_height");
+  let scale = document.getElementById("size_scale");
+  if (type == null || type == SIZE_TYPES.Custom) {
+    scale.disabled = true;
+    width.disabled = false;
+    height.disabled = false;
+    width.value = screen.size.width;
+    height.value = screen.size.height;
+    scale.childNodes.forEach((elt) => { elt.selected = elt.value == 1 });
+  } else if (type == SIZE_TYPES.Monitor) {
+    scale.disabled = false;
+    width.disabled = false;
+    height.disabled = false;
+    let monitorScale = screen.size.scale ? screen.size.scale : 1;
+    scale.childNodes.forEach((elt) => { elt.selected = elt.value == monitorScale });
+    width.value = screen.size.mwidth ? screen.size.mwidth : 1;
+    height.value = screen.size.mheight ? screen.size.mheight : 1;
+  } else {
+    scale.disabled = true;
+    width.disabled = true;
+    height.disabled = true;
+    scale.childNodes.forEach((elt) => { elt.selected = elt.value == 1 });
+    if (type == SIZE_TYPES.Computer) {
+      width.value = SIZES.computer.width;
+      height.value = SIZES.computer.height;
+    } else if (type == SIZE_TYPES.Turtle) {
+      width.value = SIZES.turtle.width;
+      height.value = SIZES.turtle.height;
+    } else if (type == SIZE_TYPES.Pocket) {
+      width.value = SIZES.pocket.width;
+      height.value = SIZES.pocket.height;
+    }
+  }
+}
+
+function openProperties() {
+  selectSizeType(screen.size.type);
+  document.getElementById("size_select").addEventListener("closed", (select) => {
+    select.target.childNodes.forEach((item) => { if (item.selected) { selectSizeType(item.value) } });
+  });
+  document.getElementById("properties").open = true;
+}
+document.getElementById('settings').onclick = openProperties;
+
+function saveProperties() {
+  let width = Number(document.getElementById("size_width").value);
+  let height = Number(document.getElementById("size_height").value);
+  console.log(width, height);
+  let type;
+  document.getElementById('size_select').childNodes.forEach((elt) => {
+    if (elt.selected) {
+      type = Number(elt.value);
+    }
+  });
+  screen.size = {
+    width: width,
+    height: height,
+    type: type,
+  };
+  screen.canvas.width = screen.size.width * 6 + 2 * screen.border;
+  screen.canvas.height = screen.size.height * 9 + 2 * screen.border;
+  bufferScreen.size = screen.size;
+  bufferScreen.canvas.width = screen.canvas.width;
+  bufferScreen.canvas.height = screen.canvas.height;
+  screen.fixEmptyChars();
+  screen.save();
+  screen.render();
+  make_fit();
+  render();
+  document.getElementById('properties').close();
+}
+
+document.getElementById('apply_properties').onclick = saveProperties;

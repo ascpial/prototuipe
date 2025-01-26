@@ -1,15 +1,26 @@
+export const SIZE_TYPES = {
+  Computer: 0,
+  Turtle: 1,
+  Pocket: 2,
+  Monitor: 3,
+  Custom: 4,
+}
+
 export const SIZES = {
   computer: {
     width: 51,
     height: 19,
+    type: SIZE_TYPES.Computer,
   },
   turtle: {
     width: 39,
     height: 13,
+    type: SIZE_TYPES.Turtle,
   },
   pocket: {
     width: 26,
     height: 20,
+    type: SIZE_TYPES.Pocket,
   },
 }
 

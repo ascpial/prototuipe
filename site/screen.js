@@ -7,22 +7,38 @@ export class TerminalScreen extends ScreenRenderer {
   bgColor;
   selectedChar;
 
-  constructor(size, colors = DEFAULT_COLORS, border = 1) {
+  constructor(size, colors = DEFAULT_COLORS, border = 1, id) {
     super(size, colors, null, border);
     this.screen = [];
     this.buffer = [];
+    this.id = id;
 
+    this.fixEmptyChars()
+  }
+
+  fixEmptyChars() {
+    console.log(this.size.height);
+    this.screen.length = this.size.height;
     for (var i = 0; i < this.size.height; i++) {
-      this.screen.push(new Array(this.size.width));
-      this.buffer.push(new Array(this.size.width));
+      if (!this.screen[i]) {
+        this.screen[i] = [];
+      }
+      if (!this.buffer[i]) {
+        this.buffer[i] = [];
+      }
+      this.screen[i].length = this.size.width;
+      this.buffer[i].length = this.size.width;
       for (var j = 0; j < this.size.width; j++) {
-        this.screen[i][j] = {
-          charId: 32,
-          fg: COLOR_NAMES.white,
-          bg: COLOR_NAMES.black,
+        if (!this.screen[i][j]) {
+          this.screen[i][j] = {
+            charId: 32,
+            fg: COLOR_NAMES.white,
+            bg: COLOR_NAMES.black,
+          };
         };
         this.buffer[i][j] = null;
       }
+
     }
   }
 
@@ -79,6 +95,14 @@ export class TerminalScreen extends ScreenRenderer {
     }
     // document.getElementById('debug').style.backgroundColor = "#0f0";
     // setTimeout(() => { document.getElementById('debug').style.backgroundColor = null; }, 100)
+    this.save();
+  }
+
+  save() {
+    if (this.id) {
+      let data = this.serialise();
+      window.localStorage.setItem("s" + this.id, JSON.stringify(data));
+    }
   }
 
   clearBuffer() {
@@ -91,6 +115,39 @@ export class TerminalScreen extends ScreenRenderer {
     document.getElementById('debug').style.backgroundColor = "#f00";
     setTimeout(() => { document.getElementById('debug').style.backgroundColor = null; }, 100)
   }
+
+  serialise() {
+    // We need to include: Size (and size type, which includes computer, pocket, monitor, etc...)
+    // Pixel data
+    // Palette data (if changed)
+    let serialised = {};
+    let pxData = [];
+
+    for (var i = 0; i < this.size.height; i++) {
+      pxData.push(new Array(this.size.width));
+      for (var j = 0; j < this.size.width; j++) {
+        let px = this.screen[i][j];
+        pxData[i][j] = [px.charId, px.fg, px.bg];
+      }
+    }
+    serialised.screen = pxData;
+    serialised.size = this.size;
+    serialised.palette = this.colors;
+    return serialised;
+  }
+}
+
+TerminalScreen.unserialise = (data, id, border) => {
+  let screen = new TerminalScreen(data.size, data.palette, border, id);
+  for (var i = 0; i < screen.size.height; i++) {
+    for (var j = 0; j < screen.size.width; j++) {
+      let px = data.screen[i][j];
+      screen.screen[i][j].charId = px[0];
+      screen.screen[i][j].fg = px[1];
+      screen.screen[i][j].bg = px[2];
+    }
+  }
+  return screen;
 }
 
 export function bimgExport(screen, width, height, x, y) {
@@ -111,7 +168,7 @@ export function bimgExport(screen, width, height, x, y) {
     }
     data[i.toString()] = [char, fg, bg]; // this is ugly and will be changed once bimg is fully supported
   }
-  let img = {"0": data};
+  let img = { "0": data };
   img.version = "1.0.0";
   img.creator = "prototuipe";
   img.width = width;
@@ -132,7 +189,7 @@ export function bimgImport(img, screen, x, y, width, height) {
   let data = img["0"];
 
   if (!screen) {
-    screen = new TerminalScreen({width: width+x, height: height+y}, undefined, 0);
+    screen = new TerminalScreen({ width: width + x, height: height + y }, undefined, 0);
   }
 
   for (let i = 0; i < height; i++) {

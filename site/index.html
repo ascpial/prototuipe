@@ -38,7 +38,10 @@
         </md-filled-tonal-icon-button>
       </div>
       <div class="right">
-          <md-filled-tonal-icon-button id="settings"><!--  onclick="document.getElementById('properties').show()"> -->
+        <md-filled-tonal-icon-button id="open">
+          <md-icon> folder_open </md-icon>
+        </md-filled-tonal-icon-button>
+        <md-filled-tonal-icon-button id="settings">
           <md-icon> settings </md-icon>
         </md-filled-tonal-icon-button>
       </div>
@@ -144,7 +147,6 @@
         </tr>
       </table>
     </div>
-    <!-- <md-elevated-button>Elevated</md-elevated-button> -->
     <div class="chars">
       <div id="chars">
       </div>
@@ -155,36 +157,73 @@
     <div slot="headline">
       <label>Properties</label>
     </div>
-    <div class="sizes-chooser" slot="content">
-      <!-- <h3> Sketch </h3> -->
+    <div slot="content" class="sizes-chooser">
+      <!-- <h2> Sketch </h2> -->
       <!-- <md-outlined-text-field label="Sketch name" value="Hello world"> -->
       <!-- </md-outlined-text-field> -->
 
+      <!-- <h3 style="padding-top: 8px;"> General color palette </h3> -->
+
+      <!-- <table class="colors" class="right" style="--pills-width: 366px;"> -->
+      <!--   <tr> -->
+      <!--     <td><md-filled-icon-button id="gp0"></td> -->
+      <!--     <td><md-filled-icon-button id="gp1"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp2"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp3"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp4"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp5"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp6"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp7"></md-filled-icon-button></td> -->
+      <!--   </tr> -->
+      <!--   <tr> -->
+      <!--     <td><md-filled-icon-button id="gp8"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp9"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp10"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp11"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp12"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp13"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp14"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="gp15"></md-filled-icon-button></td> -->
+      <!--   </tr> -->
+      <!-- </table> -->
+      <!-- <div class="row" style="margin-bottom: 16px;"> -->
+      <!--     <div class="left"></div> -->
+      <!--   <md-text-button class="right" trailing-icon> -->
+      <!--     Reset -->
+      <!--     <md-icon slot="icon"> delete_forever </md-icon> -->
+      <!--   </md-text-button> -->
+      <!-- </div> -->
+
+      <!-- <md-divider></md-divider> -->
+
+      <!-- <h2> Screen </h2> -->
+
       <h3>Screen size</h3>
-      <md-outlined-select>
-        <md-select-option selected value="computer">
+      <md-outlined-select id="size_select">
+        <md-select-option selected value="0">
           <div slot="headline">Computer</div>
         </md-select-option>
-        <md-select-option value="pocket">
+        <md-select-option value="2">
           <div slot="headline">Pocket</div>
         </md-select-option>
-        <md-select-option value="turtle">
+        <md-select-option value="1">
           <div slot="headline">Turtle</div>
         </md-select-option>
-        <md-select-option value="monitor">
-          <div slot="headline">Monitor</div>
-        </md-select-option>
-        <md-select-option value="custom">
+        <!-- <md-select-option value="3"> -->
+        <!--   <div slot="headline">Monitor</div> -->
+        <!-- </md-select-option> -->
+        <md-select-option value="4">
           <div slot="headline">Custom</div>
         </md-select-option>
       </md-outlined-select>
       <div class="horizontal">
-        <md-outlined-text-field placeholder="Width" type="number" style="width: 120px; padding-top: 8px;">
+        <md-outlined-text-field placeholder="Width" type="number" style="width: 120px; padding-top: 8px;"
+          id="size_width">
         </md-outlined-text-field>
         <md-outlined-text-field placeholder="Height" type="number"
-          style="width: 120px; padding-top: 8px; padding-left: 8px;">
+          style="width: 120px; padding-top: 8px; padding-left: 8px;" id="size_height">
         </md-outlined-text-field>
-        <md-outlined-select style="padding-top: 8px; padding-left: 8px; min-width: 110px;" disabled>
+        <md-outlined-select style="padding-top: 8px; padding-left: 8px; min-width: 110px; display: none;" id="size_scale">
           <md-select-option value="0.5">
             <div slot="headline"> &times; 0.5 </div>
           </md-select-option>
@@ -217,40 +256,47 @@
           </md-select-option>
         </md-outlined-select>
       </div>
-      <h3 style="padding-top: 8px;"> Appearance </h3>
-      <label class="action_label">
-        <md-checkbox touch-target="wrapper"></md-checkbox>
-        Paint borders
-      </label>
+      <!-- <h3 style="padding-top: 8px;"> Appearance </h3> -->
+      <!-- <label class="action_label"> -->
+      <!--   <md-checkbox touch-target="wrapper"></md-checkbox> -->
+      <!--   Paint borders -->
+      <!-- </label> -->
 
-      <h3 style="padding-top: 8px;"> Color palette </h3>
+      <!-- <h3 style="padding-top: 8px;"> Screen color palette </h3> -->
 
-      <table class="colors" class="right" style="--pills-width: 366px;">
-        <tr>
-          <td><md-filled-icon-button id="p0"></td>
-          <td><md-filled-icon-button id="p1"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p2"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p3"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p4"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p5"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p6"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p7"></md-filled-icon-button></td>
-        </tr>
-        <tr>
-          <td><md-filled-icon-button id="p8"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p9"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p10"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p11"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p12"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p13"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p14"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p15"></md-filled-icon-button></td>
-        </tr>
-      </table>
+      <!-- <table class="colors" class="right" style="--pills-width: 366px;"> -->
+      <!--   <tr> -->
+      <!--     <td><md-filled-icon-button id="p0"></td> -->
+      <!--     <td><md-filled-icon-button id="p1"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p2"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p3"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p4"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p5"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p6"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p7"></md-filled-icon-button></td> -->
+      <!--   </tr> -->
+      <!--   <tr> -->
+      <!--     <td><md-filled-icon-button id="p8"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p9"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p10"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p11"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p12"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p13"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p14"></md-filled-icon-button></td> -->
+      <!--     <td><md-filled-icon-button id="p15"></md-filled-icon-button></td> -->
+      <!--   </tr> -->
+      <!-- </table> -->
+      <!-- <div class="row" style="margin-bottom: 16px;"> -->
+      <!--     <div class="left"></div> -->
+      <!--   <md-text-button class="right" trailing-icon> -->
+      <!--     Reset -->
+      <!--     <md-icon slot="icon"> delete_forever </md-icon> -->
+      <!--   </md-text-button> -->
+      <!-- </div> -->
     </div>
     <div slot="actions">
-      <md-text-button>Cancel</md-text-button>
-      <md-text-button>Apply</md-text-button>
+      <md-text-button onclick="document.getElementById('properties').close()">Cancel</md-text-button>
+      <md-text-button id="apply_properties">Apply</md-text-button>
     </div>
   </md-dialog>
 </body>
