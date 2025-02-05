@@ -691,9 +691,6 @@ function updatePills() {
     } else {
       elt.children[0].style.setProperty("color", "#000");
     }
-    // elt = document.getElementById("p" + i);
-    // elt.style.setProperty("--md-filled-icon-button-container-color", screen.colors[i]);
-    // elt.style.setProperty("--md-filled-icon-button-disabled-container-color", screen.colors[i]);
     // elt = document.getElementById("gp" + i);
     // elt.style.setProperty("--md-filled-icon-button-container-color", screen.colors[i]);
     // elt.style.setProperty("--md-filled-icon-button-disabled-container-color", screen.colors[i]);
@@ -1002,16 +999,45 @@ function selectSizeType(type) {
   }
 }
 
+let settingsColors = null;
+
+function setSettingsPills() {
+  for (let i = 0; i < 16; i++) {
+    let elt = document.getElementById("p" + i);
+    elt.style.setProperty("--md-filled-icon-button-container-color", settingsColors[i]);
+    elt.style.setProperty("--md-filled-icon-button-disabled-container-color", settingsColors[i]);
+  }
+}
+
 function openProperties() {
   selectSizeType(screen.size.type);
   document.getElementById("size_select").addEventListener("closed", (select) => {
     select.target.childNodes.forEach((item) => { if (item.selected) { selectSizeType(item.value) } });
   });
+  settingsColors = structuredClone(screen.colors);
+  setSettingsPills();
   document.getElementById("properties").open = true;
 }
 document.getElementById('settings').onclick = openProperties;
 
+function selectColor(i) {
+  let elt = document.getElementById("color_picker");
+  elt.value = screen.colors[i];
+  elt.oninput = () => {
+    settingsColors[i] = elt.value;
+    setSettingsPills();
+  }
+  elt.click();
+}
+for (let i = 0; i < 16; i++) {
+  let color = document.getElementById('p' + i);
+  color.addEventListener("click", () => (selectColor(i)));
+}
+
 function saveProperties() {
+  screen.colors = settingsColors;
+  bufferScreen.colors = settingsColors;
+  updatePills();
   let width = Number(document.getElementById("size_width").value);
   let height = Number(document.getElementById("size_height").value);
   console.log(width, height);
@@ -1042,3 +1068,8 @@ function saveProperties() {
 }
 
 document.getElementById('apply_properties').onclick = saveProperties;
+
+document.getElementById("reset_pcolor").onclick = () => {
+  settingsColors = structuredClone(DEFAULT_COLORS);
+  setSettingsPills();
+};

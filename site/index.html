@@ -262,37 +262,38 @@
       <!--   Paint borders -->
       <!-- </label> -->
 
-      <!-- <h3 style="padding-top: 8px;"> Screen color palette </h3> -->
+      <h3 style="padding-top: 8px;"> Screen color palette </h3>
+      <input id="color_picker" style="display: none" type="color" />
 
-      <!-- <table class="colors" class="right" style="--pills-width: 366px;"> -->
-      <!--   <tr> -->
-      <!--     <td><md-filled-icon-button id="p0"></td> -->
-      <!--     <td><md-filled-icon-button id="p1"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p2"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p3"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p4"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p5"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p6"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p7"></md-filled-icon-button></td> -->
-      <!--   </tr> -->
-      <!--   <tr> -->
-      <!--     <td><md-filled-icon-button id="p8"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p9"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p10"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p11"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p12"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p13"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p14"></md-filled-icon-button></td> -->
-      <!--     <td><md-filled-icon-button id="p15"></md-filled-icon-button></td> -->
-      <!--   </tr> -->
-      <!-- </table> -->
-      <!-- <div class="row" style="margin-bottom: 16px;"> -->
-      <!--     <div class="left"></div> -->
-      <!--   <md-text-button class="right" trailing-icon> -->
-      <!--     Reset -->
-      <!--     <md-icon slot="icon"> delete_forever </md-icon> -->
-      <!--   </md-text-button> -->
-      <!-- </div> -->
+      <table class="colors" class="right" style="--pills-width: 366px;">
+        <tr>
+          <td><md-filled-icon-button id="p0" type="color"></td>
+          <td><md-filled-icon-button id="p1"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p2"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p3"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p4"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p5"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p6"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p7"></md-filled-icon-button></td>
+        </tr>
+        <tr>
+          <td><md-filled-icon-button id="p8"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p9"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p10"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p11"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p12"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p13"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p14"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p15"></md-filled-icon-button></td>
+        </tr>
+      </table>
+      <div class="row" style="margin-bottom: 16px;">
+          <div class="left"></div>
+        <md-text-button id="reset_pcolor" class="right" trailing-icon>
+          Reset
+          <md-icon slot="icon"> delete_forever </md-icon>
+        </md-text-button>
+      </div>
     </div>
     <div slot="actions">
       <md-text-button onclick="document.getElementById('properties').close()">Cancel</md-text-button>

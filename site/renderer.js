@@ -59,7 +59,7 @@ export class ScreenRenderer {
   size;
   border;
 
-  constructor(size, colors = DEFAULT_COLORS, canvas = null, border=1) {
+  constructor(size, colors = null, canvas = null, border=1) {
     if (!canvas) {
       this.canvas = document.createElement('canvas');
       this.canvas.width = size.width * 6 + 2*border;
@@ -73,7 +73,7 @@ export class ScreenRenderer {
     }
     this.border = border;
     this.size = size;
-    this.colors = colors;
+    this.colors = colors ? colors : structuredClone(colors);
 
     this.cache = document.createElement('canvas');
     this.cache.width = 6;
