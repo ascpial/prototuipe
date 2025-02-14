@@ -6,18 +6,19 @@ export class TerminalScreen extends ScreenRenderer {
   fgColor;
   bgColor;
   selectedChar;
+  name;
 
-  constructor(size, colors = DEFAULT_COLORS, border = 1, id) {
+  constructor(size, colors = DEFAULT_COLORS, border = 1, id, name) {
     super(size, colors, null, border);
     this.screen = [];
     this.buffer = [];
     this.id = id;
+    this.name = name;
 
     this.fixEmptyChars()
   }
 
   fixEmptyChars() {
-    console.log(this.size.height);
     this.screen.length = this.size.height;
     for (var i = 0; i < this.size.height; i++) {
       if (!this.screen[i]) {
@@ -133,20 +134,26 @@ export class TerminalScreen extends ScreenRenderer {
     serialised.screen = pxData;
     serialised.size = this.size;
     serialised.palette = this.colors;
+    serialised.preview = this.canvas.toDataURL();
+    serialised.name = this.name;
     return serialised;
+  }
+
+  load(data) {
+    for (var i = 0; i < this.size.height; i++) {
+      for (var j = 0; j < this.size.width; j++) {
+        let px = data[i][j];
+        this.screen[i][j].charId = px[0];
+        this.screen[i][j].fg = px[1];
+        this.screen[i][j].bg = px[2];
+      }
+    }
   }
 }
 
 TerminalScreen.unserialise = (data, id, border) => {
-  let screen = new TerminalScreen(data.size, data.palette, border, id);
-  for (var i = 0; i < screen.size.height; i++) {
-    for (var j = 0; j < screen.size.width; j++) {
-      let px = data.screen[i][j];
-      screen.screen[i][j].charId = px[0];
-      screen.screen[i][j].fg = px[1];
-      screen.screen[i][j].bg = px[2];
-    }
-  }
+  let screen = new TerminalScreen(data.size, data.palette, border, id, data.name);
+  screen.load(data.screen);
   return screen;
 }
 

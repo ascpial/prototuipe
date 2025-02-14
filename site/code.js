@@ -573,26 +573,49 @@ let size = SIZES.computer;
 // let size = {width: 100, height: 5};
 
 let screen;
-let loadingId = "entry"
-let data = JSON.parse(window.localStorage.getItem('s' + loadingId));
-if (data == null) {
-  screen = new TerminalScreen(size, undefined, 2, loadingId);
-} else {
-  screen = TerminalScreen.unserialise(data, loadingId, 2);
-  console.log(screen.get(2, 0))
+let loadingId = window.localStorage.getItem("lastOpened");
+loadingId = loadingId ? loadingId : "entry";
+
+let projects = JSON.parse(window.localStorage.getItem("projects"));
+projects = projects ? projects : [];
+function saveProjects() {
+  window.localStorage.setItem("projects", JSON.stringify(projects));
 }
-screen.interaction = { mode: MODES.Idle };
-screen.fgColor = 0;
-screen.bgColor = 15;
-screen.selectedChar = 1;
 
 let canvas = document.getElementById("screen");
-
-canvas.width = screen.canvas.width;
-canvas.height = screen.canvas.height;
-
 let ctx = canvas.getContext('2d');
-let bufferScreen = new ScreenRenderer(size, screen.colors, canvas, 2);
+
+let bufferScreen;
+
+let keybindsEnabled = true;
+function openProject(id) {
+  let data = JSON.parse(window.localStorage.getItem('s' + id));
+  if (data == null) {
+    screen = new TerminalScreen(size, undefined, 2, id, "My Project");
+  } else {
+    screen = TerminalScreen.unserialise(data, id, 2);
+  }
+
+  screen.interaction = { mode: MODES.Idle };
+  screen.fgColor = 0;
+  screen.bgColor = 15;
+  screen.selectedChar = 1;
+  canvas.width = screen.canvas.width;
+  canvas.height = screen.canvas.height;
+  bufferScreen = new ScreenRenderer(size, screen.colors, canvas, 2);
+
+  window.localStorage.setItem("lastOpened", id);
+  if (!projects.includes(id)) {
+    projects.push(id);
+    saveProjects();
+  }
+  keybindsEnabled = true;
+  document.getElementById("properties").close();
+  document.getElementById("delete_confirmation").close();
+  document.getElementById("projects_dialog").close();
+}
+
+openProject(loadingId);
 
 let prop;
 function make_fit() {
@@ -605,13 +628,39 @@ function make_fit() {
   canvas.style.visibility = "visible";
 }
 
-// make_fit()
-
 window.onload = () => {
   updatePills();
   make_fit();
 };
-window.addEventListener("resize", () => { make_fit() })
+window.addEventListener("resize", () => { make_fit() });
+window.addEventListener("storage", (e) => {
+  if (e.key == "projects") {
+    projects = JSON.parse(e.newValue);
+    if (document.getElementById("projects_dialog").open) {
+      openProjects();
+    }
+  } else if (e.key == "s" + screen.id) {
+    if (e.newValue) {
+      openProject(screen.id);
+      screen.render();
+      make_fit();
+      render();
+      updatePills();
+    } else {
+      projects = JSON.parse(window.localStorage.getItem("projects"));
+      if (projects.length > 0) {
+        openProject(projects[0]);
+      } else {
+        openProject(loadingId);
+      }
+      screen.render();
+      screen.save();
+      make_fit();
+      render();
+      updatePills();
+    }
+  }
+});
 
 function updateCSSColor() {
   document.documentElement.style.setProperty('--foreground-color', screen.colors[screen.fgColor]);
@@ -887,14 +936,16 @@ function pointUp(e) {
 
 
 function executeKeybinds(e) {
-  if (e.key == "s") {
-    setTool(TOOLS.Select);
-  } else if (e.key == "t") {
-    setTool(TOOLS.Write);
-  } else if (e.key == "n" || e.key == "p") {
-    setTool(TOOLS.Place);
-  } else if (e.key == "d") {
-    setTool(TOOLS.Draw);
+  if (keybindsEnabled) {
+    if (e.key == "s") {
+      setTool(TOOLS.Select);
+    } else if (e.key == "t") {
+      setTool(TOOLS.Write);
+    } else if (e.key == "n" || e.key == "p") {
+      setTool(TOOLS.Place);
+    } else if (e.key == "d") {
+      setTool(TOOLS.Draw);
+    }
   }
 }
 
@@ -960,7 +1011,6 @@ if (FONT.complete) {
 }
 
 function selectSizeType(type) {
-  console.log(type)
   let sizeSelect = document.getElementById("size_select");
   sizeSelect.childNodes.forEach((elt) => { elt.selected = elt.value == type });
   let width = document.getElementById("size_width");
@@ -1016,7 +1066,9 @@ function openProperties() {
   });
   settingsColors = structuredClone(screen.colors);
   setSettingsPills();
-  document.getElementById("properties").open = true;
+  document.getElementById("project_name").value = screen.name;
+  keybindsEnabled = false;
+  document.getElementById("properties").show();
 }
 document.getElementById('settings').onclick = openProperties;
 
@@ -1038,9 +1090,9 @@ function saveProperties() {
   screen.colors = settingsColors;
   bufferScreen.colors = settingsColors;
   updatePills();
+  screen.name = document.getElementById("project_name").value;
   let width = Number(document.getElementById("size_width").value);
   let height = Number(document.getElementById("size_height").value);
-  console.log(width, height);
   let type;
   document.getElementById('size_select').childNodes.forEach((elt) => {
     if (elt.selected) {
@@ -1058,18 +1110,104 @@ function saveProperties() {
   bufferScreen.canvas.width = screen.canvas.width;
   bufferScreen.canvas.height = screen.canvas.height;
   screen.fixEmptyChars();
-  screen.save();
   screen.ctx.fillStyle = screen.colors[COLOR_NAMES.black];
   screen.ctx.fillRect(0, 0, screen.canvas.width, screen.canvas.height);
   screen.render();
+  screen.save();
   make_fit();
   render();
+  keybindsEnabled = true;
   document.getElementById('properties').close();
 }
 
 document.getElementById('apply_properties').onclick = saveProperties;
 
+function cancelProperties() {
+  keybindsEnabled = true;
+  document.getElementById('properties').close();
+}
+
+document.getElementById('cancel_properties').onclick = cancelProperties;
+
 document.getElementById("reset_pcolor").onclick = () => {
   settingsColors = structuredClone(DEFAULT_COLORS);
   setSettingsPills();
 };
+
+function openProjects() {
+  let projectsCards = document.getElementById("project_cards");
+  projectsCards.innerHTML = "";
+  projects.forEach((projectID) => {
+    let project = JSON.parse(window.localStorage.getItem("s" + projectID));
+    if (project) {
+      let card = document.createElement("div");
+      card.classList.add("project_card");
+      if (projectID == screen.id) {
+        card.classList.add("selected");
+      }
+      card.appendChild(document.createElement("md-ripple"));
+      let headline = document.createElement("div");
+      headline.classList.add("headline");
+      let name = document.createElement("label");
+      name.innerHTML = project.name;
+      headline.append(name);
+      card.appendChild(headline);
+      let preview = document.createElement("div");
+      preview.classList.add("preview");
+      preview.style.setProperty("background-image", "url(" + project.preview + ")");
+      card.appendChild(preview);
+      card.addEventListener('click', () => {
+        openProject(projectID);
+        screen.render();
+        make_fit();
+        render();
+        updatePills();
+        document.getElementById('projects_dialog').close();
+      });
+      projectsCards.appendChild(card);
+    }
+  });
+  let newProject = document.createElement("div");
+  newProject.classList.add("project_card", "new_project");
+  newProject.appendChild(document.createElement("md-ripple"));
+  let newIcon = document.createElement("md-icon");
+  newIcon.innerHTML = "add_circle";
+  newProject.appendChild(newIcon);
+  newProject.addEventListener("click", () => {
+    let newProjectID = (Math.random() + 1).toString(36).substring(7);
+    while (window.localStorage.getItem(newProjectID)) {
+      newProjectID = (Math.random() + 1).toString(36).substring(7);
+    }
+    openProject(newProjectID);
+    screen.save();
+    screen.render();
+    make_fit();
+    render();
+    document.getElementById('projects_dialog').close();
+  });
+  projectsCards.appendChild(newProject);
+  document.getElementById("projects_dialog").show();
+}
+document.getElementById('open_projects').onclick = openProjects
+
+function deleteProject() {
+  let i = projects.indexOf(screen.id);
+  if (i > -1) {
+    projects.splice(i, 1);
+  }
+  saveProjects();
+  window.localStorage.removeItem("s" + screen.id);
+  if (projects.length > 0) {
+    openProject(projects[0]);
+  } else {
+    openProject(loadingId);
+  }
+  updatePills();
+  screen.render();
+  screen.save();
+  make_fit();
+  render();
+  keybindsEnabled = true;
+  document.getElementById('delete_confirmation').close();
+}
+document.getElementById('delete_project').addEventListener('click', deleteProject);

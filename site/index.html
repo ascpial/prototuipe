@@ -38,7 +38,7 @@
         </md-filled-tonal-icon-button>
       </div>
       <div class="right">
-        <md-filled-tonal-icon-button id="open">
+        <md-filled-tonal-icon-button id="open_projects">
           <md-icon> folder_open </md-icon>
         </md-filled-tonal-icon-button>
         <md-filled-tonal-icon-button id="settings">
@@ -153,14 +153,30 @@
     </div>
   </div>
 
+  <md-dialog id="delete_confirmation" style="z-index: 99;">
+    <div slot="headline">Permanently delete this project?</div>
+    <md-icon slot="icon">delete_forever</md-icon>
+    <div slot="actions">
+      <md-text-button id="delete_project">Delete</md-text-button>
+      <md-filled-tonal-button onclick="document.getElementById('delete_confirmation').close(); document.getElementById('properties').show();">Cancel</md-filled-tonal-button>
+    </div>
+  </md-dialog>
+
   <md-dialog id="properties">
     <div slot="headline">
       <label>Properties</label>
     </div>
     <div slot="content" class="sizes-chooser">
-      <!-- <h2> Sketch </h2> -->
-      <!-- <md-outlined-text-field label="Sketch name" value="Hello world"> -->
-      <!-- </md-outlined-text-field> -->
+      <h3> Project </h3>
+      <md-outlined-text-field label="Project name" value="My project" id="project_name">
+      </md-outlined-text-field>
+      <div style="margin-top: 8px;">
+        <md-text-button onclick="document.getElementById('properties').close(); document.getElementById('delete_confirmation').show()">
+          Delete project
+          <md-icon slot="icon"> delete_forever </md-icon>
+        </md-text-button>
+      </div>
+
 
       <!-- <h3 style="padding-top: 8px;"> General color palette </h3> -->
 
@@ -223,7 +239,8 @@
         <md-outlined-text-field placeholder="Height" type="number"
           style="width: 120px; padding-top: 8px; padding-left: 8px;" id="size_height">
         </md-outlined-text-field>
-        <md-outlined-select style="padding-top: 8px; padding-left: 8px; min-width: 110px; display: none;" id="size_scale">
+        <md-outlined-select style="padding-top: 8px; padding-left: 8px; min-width: 110px; display: none;"
+          id="size_scale">
           <md-select-option value="0.5">
             <div slot="headline"> &times; 0.5 </div>
           </md-select-option>
@@ -288,7 +305,7 @@
         </tr>
       </table>
       <div class="row" style="margin-bottom: 16px;">
-          <div class="left"></div>
+        <div class="left"></div>
         <md-text-button id="reset_pcolor" class="right" trailing-icon>
           Reset
           <md-icon slot="icon"> delete_forever </md-icon>
@@ -296,8 +313,21 @@
       </div>
     </div>
     <div slot="actions">
-      <md-text-button onclick="document.getElementById('properties').close()">Cancel</md-text-button>
+      <md-text-button id="cancel_properties">Cancel</md-text-button>
       <md-text-button id="apply_properties">Apply</md-text-button>
+    </div>
+  </md-dialog>
+
+  <md-dialog id="projects_dialog">
+    <div slot="headline"><label>Projects</label></div>
+    <div slot="content" class="project_cards" id="project_cards">
+      <div class="project_card new_project" id="new_project">
+        <md-ripple></md-ripple>
+        <md-icon> add_circle </md-icon>
+      </div>
+    </div>
+    <div slot="actions">
+      <md-text-button onclick="document.getElementById('projects_dialog').close()">Close</md-text-button>
     </div>
   </md-dialog>
 </body>
