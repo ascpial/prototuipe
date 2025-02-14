@@ -276,15 +276,8 @@ md-dialog {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  image-rendering: pixelated;
 }
-
-/* .project_card .preview img { */
-/*   object-fit: contain; */
-/*   max-width: 100%; */
-/*   max-height: 100%; */
-/*   width: auto; */
-/*   height: auto; */
-/* } */
 
 .project_card .headline {
   height: 30px;
