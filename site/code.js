@@ -587,7 +587,7 @@ let ctx = canvas.getContext('2d');
 
 let bufferScreen;
 
-let keybindsEnabled = true;
+let keyEnabled = true;
 function openProject(id) {
   let data = JSON.parse(window.localStorage.getItem('s' + id));
   if (data == null) {
@@ -609,7 +609,7 @@ function openProject(id) {
     projects.push(id);
     saveProjects();
   }
-  keybindsEnabled = true;
+  keyEnabled = true;
   document.getElementById("properties").close();
   document.getElementById("delete_confirmation").close();
   document.getElementById("projects_dialog").close();
@@ -936,24 +936,24 @@ function pointUp(e) {
 
 
 function executeKeybinds(e) {
-  if (keybindsEnabled) {
-    if (e.key == "s") {
-      setTool(TOOLS.Select);
-    } else if (e.key == "t") {
-      setTool(TOOLS.Write);
-    } else if (e.key == "n" || e.key == "p") {
-      setTool(TOOLS.Place);
-    } else if (e.key == "d") {
-      setTool(TOOLS.Draw);
-    }
+  if (e.key == "s") {
+    setTool(TOOLS.Select);
+  } else if (e.key == "t") {
+    setTool(TOOLS.Write);
+  } else if (e.key == "n" || e.key == "p") {
+    setTool(TOOLS.Place);
+  } else if (e.key == "d") {
+    setTool(TOOLS.Draw);
   }
 }
 
 function keyDown(e) {
-  if (IMPL_TOOLS[tool].keyDown) {
-    IMPL_TOOLS[tool].keyDown(screen, e);
-  } else {
-    executeKeybinds(e);
+  if (keyEnabled) {
+    if (IMPL_TOOLS[tool].keyDown) {
+      IMPL_TOOLS[tool].keyDown(screen, e);
+    } else {
+      executeKeybinds(e);
+    }
   }
 }
 
@@ -1067,7 +1067,7 @@ function openProperties() {
   settingsColors = structuredClone(screen.colors);
   setSettingsPills();
   document.getElementById("project_name").value = screen.name;
-  keybindsEnabled = false;
+  keyEnabled = false;
   document.getElementById("properties").show();
 }
 document.getElementById('settings').onclick = openProperties;
@@ -1116,14 +1116,14 @@ function saveProperties() {
   screen.save();
   make_fit();
   render();
-  keybindsEnabled = true;
+  keyEnabled = true;
   document.getElementById('properties').close();
 }
 
 document.getElementById('apply_properties').onclick = saveProperties;
 
 function cancelProperties() {
-  keybindsEnabled = true;
+  keyEnabled = true;
   document.getElementById('properties').close();
 }
 
@@ -1207,7 +1207,7 @@ function deleteProject() {
   screen.save();
   make_fit();
   render();
-  keybindsEnabled = true;
+  keyEnabled = true;
   document.getElementById('delete_confirmation').close();
 }
 document.getElementById('delete_project').addEventListener('click', deleteProject);
