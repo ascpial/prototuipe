@@ -11,7 +11,19 @@
   <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet"> -->
   <script src="./code.js" type="module"></script>
   <!-- Remove favicon request -->
-  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <link rel="icon" href="/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <meta property="og:title" content="Prototuipe" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://prototuipe.ascpial.fr" />
+  <meta property="og:image" content="https://prototuipe.ascpial.fr/logo.png" />
+  <meta property="og:description" content="Design UIs and images for ComputerCraft with ease" />
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Prototuipe">
+  <meta name="twitter:description" content="Design UIs and images for ComputerCraft with ease">
+  <meta name="twitter:url" content="https://prototuipe.ascpial.fr">
 </head>
 
 <body>
@@ -158,7 +170,8 @@
     <md-icon slot="icon">delete_forever</md-icon>
     <div slot="actions">
       <md-text-button id="delete_project">Delete</md-text-button>
-      <md-filled-tonal-button onclick="document.getElementById('delete_confirmation').close(); document.getElementById('properties').show();">Cancel</md-filled-tonal-button>
+      <md-filled-tonal-button
+        onclick="document.getElementById('delete_confirmation').close(); document.getElementById('properties').show();">Cancel</md-filled-tonal-button>
     </div>
   </md-dialog>
 
@@ -171,7 +184,8 @@
       <md-outlined-text-field label="Project name" value="My project" id="project_name">
       </md-outlined-text-field>
       <div style="margin-top: 8px;">
-        <md-text-button onclick="document.getElementById('properties').close(); document.getElementById('delete_confirmation').show()">
+        <md-text-button
+          onclick="document.getElementById('properties').close(); document.getElementById('delete_confirmation').show()">
           Delete project
           <md-icon slot="icon"> delete_forever </md-icon>
         </md-text-button>

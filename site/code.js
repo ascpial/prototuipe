@@ -595,6 +595,9 @@ function openProject(id) {
   } else {
     screen = TerminalScreen.unserialise(data, id, 2);
   }
+  if (screen.name) {
+    document.title = screen.name + " - Prototuipe"
+  }
 
   screen.interaction = { mode: MODES.Idle };
   screen.fgColor = 0;
