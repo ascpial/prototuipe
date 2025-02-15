@@ -86,6 +86,32 @@ body {
   image-rendering: pixelated;
 }
 
+.floating {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  margin: 10px;
+}
+
+.zoom_controls {
+  padding: 2px;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-container);
+  border-radius: 22px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  --md-elevation-level: 0;
+  opacity: 0.5;
+  transition-duration: 250ms;
+    transition-timing-function: ease-in-out;
+}
+
+.zoom_controls:hover {
+  --md-elevation-level: 1;
+  opacity: 1;
+}
+
 .row {
   display: flex;
   flex-direction: row;
