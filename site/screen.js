@@ -50,7 +50,12 @@ export class TerminalScreen extends ScreenRenderer {
         if (this.buffer[y][x] === null) {
           pixel = this.screen[y][x]
         } else if (this.buffer[y][x] instanceof SubPx) {
-          console.warn('subpx merging not implemented');
+          let [valid, char] = this.buffer[y][x].toChar();
+          if (valid) {
+            pixel = char;
+          } else {
+            pixel = this.screen[y][x];
+          }
         } else {
           pixel = this.buffer[y][x];
         }
@@ -86,16 +91,20 @@ export class TerminalScreen extends ScreenRenderer {
         let pixel = this.buffer[y][x];
         if (pixel !== null) {
           if (pixel instanceof SubPx) {
-            console.warn('subpx merging not implemented')
+            let [valid, value] = pixel.toChar();
+            if (valid) {
+              this.screen[y][x] = value;
+            }
           } else {
             this.screen[y][x] = pixel;
-            this.buffer[y][x] = null;
           }
+          this.buffer[y][x] = null;
         }
       }
     }
     // document.getElementById('debug').style.backgroundColor = "#0f0";
     // setTimeout(() => { document.getElementById('debug').style.backgroundColor = null; }, 100)
+    this.render();
     this.save();
   }
 
@@ -169,6 +178,7 @@ export function bimgExport(screen, width, height, x, y) {
     let bg = "";
     let fg = "";
     for (let j = 0; j < width; j++) {
+      console.log(i, j);
       char += String.fromCharCode(screen.screen[i + y][j + x].charId);
       bg += screen.screen[i + y][j + x].bg.toString(16);
       fg += screen.screen[i + y][j + x].fg.toString(16);

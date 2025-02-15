@@ -907,14 +907,31 @@ function setSubPx(sx, sy, color) {
   let x = ~~(sx / 2);
   let y = ~~(sy / 3);
   if (0 <= x && x < screen.size.width && 0 <= y && y < screen.size.height) {
-    sx = sx % 2;
-    sy = sy % 3;
-    let char = screen.get(x, y);
-    let px = new SubPx(char.charId, char.fg, char.bg);
-    px.set(sx, sy, color);
-    let [valid, newChar] = px.toChar();
-    if (valid) {
-      screen.drawChar(newChar.charId, x, y, newChar.fg, newChar.bg);
+    let px = sx % 2;
+    let py = sy % 3;
+    if (screen.buffer[y][x] && screen.buffer[y][x] instanceof SubPx) {
+      screen.buffer[y][x].set(px, py, color);
+      screen.ctx.fillStyle = screen.colors[screen.fgColor];
+      screen.ctx.fillRect(
+        sx * 3 + screen.border,
+        sy * 3 + screen.border,
+        3, 3,
+      );
+    } else if (!screen.buffer[y][x]) {
+      let char = screen.get(x, y);
+      let newPx = new SubPx(char.charId, char.fg, char.bg);
+      newPx.set(px, py, color);
+      screen.buffer[y][x] = newPx;
+      screen.ctx.fillStyle = screen.colors[screen.fgColor];
+      screen.ctx.fillRect(
+        sx * 3 + screen.border,
+        sy * 3 + screen.border,
+        3, 3,
+      );
+      // let [valid, newChar] = px.toChar();
+      // if (valid) {
+      //   screen.drawChar(newChar.charId, x, y, newChar.fg, newChar.bg);
+      // }
     }
   }
 }

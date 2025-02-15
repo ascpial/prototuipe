@@ -46,6 +46,7 @@ export class SubPx {
           }
         }
       }
+      fgColor = (fgColor == null) ? 0 : fgColor;
       return [true, { charId: id + 128, fg: fgColor, bg: bgColor }];
     }
   }
