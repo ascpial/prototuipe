@@ -1056,7 +1056,9 @@ function selectSizeType(type) {
     width.disabled = false;
     height.disabled = false;
     let monitorScale = screen.size.scale ? screen.size.scale : 1;
-    scale.childNodes.forEach((elt) => { elt.selected = elt.value == monitorScale });
+    scale.childNodes.forEach((elt) => {
+      elt.selected = elt.value == monitorScale;
+    });
     width.value = screen.size.mwidth ? screen.size.mwidth : 1;
     height.value = screen.size.mheight ? screen.size.mheight : 1;
   } else {
@@ -1087,11 +1089,11 @@ function setSettingsPills() {
   }
 }
 
+document.getElementById("size_select").addEventListener('closed', (select) => {
+  select.target.childNodes.forEach((item) => { if (item.selected) { selectSizeType(item.value) } });
+});
 function openProperties() {
   selectSizeType(screen.size.type);
-  document.getElementById("size_select").addEventListener("closed", (select) => {
-    select.target.childNodes.forEach((item) => { if (item.selected) { selectSizeType(item.value) } });
-  });
   settingsColors = structuredClone(screen.colors);
   setSettingsPills();
   document.getElementById("project_name").value = screen.name;
@@ -1126,11 +1128,30 @@ function saveProperties() {
       type = Number(elt.value);
     }
   });
-  screen.size = {
-    width: width,
-    height: height,
-    type: type,
-  };
+  if (type != SIZE_TYPES.Monitor) {
+    screen.size = {
+      width: width,
+      height: height,
+      type: type,
+    };
+  } else {
+    let scale;
+    document.getElementById('size_scale').childNodes.forEach((elt) => {
+      if (elt.selected) {
+        scale = Number(elt.value);
+      }
+    });
+    console.log(scale);
+    screen.size = {
+      mwidth: width,
+      mheight: height,
+      width: Math.round((64 * width - 20) / (6 * scale)),
+      height: Math.round((64 * height - 20) / (9 * scale)),
+      type: type,
+      scale: scale,
+    };
+    console.log(screen.size.width, screen.size.height);
+  }
   screen.canvas.width = screen.size.width * 6 + 2 * screen.border;
   screen.canvas.height = screen.size.height * 9 + 2 * screen.border;
   bufferScreen.size = screen.size;
