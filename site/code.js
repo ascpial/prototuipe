@@ -621,11 +621,20 @@ openProject(loadingId);
 let prop;
 function make_fit() {
   let pannel = document.getElementById("screen_panel");
+
+  let baseWidth = screen.size.width * 6 + screen.border * 2;
+  let baseHeight = screen.size.height * 9 + screen.border * 2;
+  canvas.style.setProperty('--base-width', baseWidth);
+  canvas.style.setProperty('--base-height', baseHeight);
+  canvas.style.setProperty('--pos-x', baseWidth / 2);
+  canvas.style.setProperty('--pos-y', baseHeight / 2);
+
   let prop1 = pannel.offsetWidth / canvas.width;
   let prop2 = pannel.offsetHeight / canvas.height;
   prop = Math.min(prop1, prop2);
-  canvas.style.width = canvas.width * prop + "px";
-  canvas.style.height = canvas.height * prop + "px";
+  // canvas.style.width = canvas.width * prop + "px";
+  // canvas.style.height = canvas.height * prop + "px";
+  canvas.style.setProperty('--prop', prop + "px");
   canvas.style.visibility = "visible";
 }
 
