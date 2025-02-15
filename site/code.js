@@ -587,7 +587,6 @@ let ctx = canvas.getContext('2d');
 
 let bufferScreen;
 
-let keyEnabled = true;
 function openProject(id) {
   let data = JSON.parse(window.localStorage.getItem('s' + id));
   if (data == null) {
@@ -612,7 +611,6 @@ function openProject(id) {
     projects.push(id);
     saveProjects();
   }
-  keyEnabled = true;
   document.getElementById("properties").close();
   document.getElementById("delete_confirmation").close();
   document.getElementById("projects_dialog").close();
@@ -967,8 +965,9 @@ function executeKeybinds(e) {
   }
 }
 
+let properties = document.getElementById('properties');
 function keyDown(e) {
-  if (keyEnabled) {
+  if (!properties.open) {
     if (IMPL_TOOLS[tool].keyDown) {
       IMPL_TOOLS[tool].keyDown(screen, e);
     } else {
@@ -1087,7 +1086,6 @@ function openProperties() {
   settingsColors = structuredClone(screen.colors);
   setSettingsPills();
   document.getElementById("project_name").value = screen.name;
-  keyEnabled = false;
   document.getElementById("properties").show();
 }
 document.getElementById('settings').onclick = openProperties;
@@ -1136,14 +1134,12 @@ function saveProperties() {
   screen.save();
   make_fit();
   render();
-  keyEnabled = true;
   document.getElementById('properties').close();
 }
 
 document.getElementById('apply_properties').onclick = saveProperties;
 
 function cancelProperties() {
-  keyEnabled = true;
   document.getElementById('properties').close();
 }
 
@@ -1227,7 +1223,6 @@ function deleteProject() {
   screen.save();
   make_fit();
   render();
-  keyEnabled = true;
   document.getElementById('delete_confirmation').close();
 }
 document.getElementById('delete_project').addEventListener('click', deleteProject);
