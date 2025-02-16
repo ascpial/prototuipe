@@ -99,7 +99,6 @@ function getSubPxCoords(event) {
 
 let place = {
   pointDown: (screen, e) => {
-    e.preventDefault();
     let pos = getCharCoords(e);
     if (e.button == 0) {
       if (screen.interaction.mode == MODES.Idle) {
@@ -125,13 +124,6 @@ let place = {
           screen.drawChar(screen.selectedChar, screen.interaction.pos.x, screen.interaction.pos.y, screen.fgColor, screen.bgColor);
         }
       }
-    } else if (e.button == 2) {
-      screen.clearBuffer();
-      screen.interaction = {
-        mode: MODES.Idle,
-        pos: getCharCoords(e),
-      };
-      render();
     }
   },
   pointMove: (screen, e) => {
@@ -150,7 +142,6 @@ let place = {
     render();
   },
   pointUp: (screen, e) => {
-    e.preventDefault();
     if (screen.interaction.mode == MODES.Placing) {
       let pos = getCharCoords(e);
       if (screen.interaction.type == TYPES.Line) {
@@ -486,17 +477,6 @@ let draw = {
         screen.interaction.pos = pos;
         screen.interaction.subpos = subpos;
         screen.drawSubPx(subpos.x, subpos.y, screen.fgColor);
-      }
-    } else if (e.button == 2) {
-      if (screen.interaction.mode == MODES.Drawing) {
-        e.preventDefault();
-        screen.clearBuffer();
-        screen.interaction = {
-          mode: MODES.Idle,
-          pos: pos,
-          subpos: subpos,
-        }
-        render();
       }
     }
   },
@@ -961,13 +941,45 @@ function keyDown(e) {
   }
 }
 
-canvas.addEventListener("mousemove", pointMove);
-canvas.addEventListener("mousedown", pointDown);
-canvas.addEventListener("mouseup", pointUp);
+canvas.addEventListener("pointermove", pointMove);
+canvas.addEventListener("pointerdown", pointDown);
+canvas.addEventListener("pointerup", pointUp);
 document.addEventListener("keydown", keyDown);
-canvas.addEventListener("mouseleave", (event) => {
+
+canvas.addEventListener('touchstart', function(e) { e.preventDefault() }, false);
+canvas.addEventListener('touchmove', function(e) { e.preventDefault() }, false);
+
+canvas.addEventListener("pointerleave", (event) => {
   if (interaction.mode == MODES.Idle) {
     interaction = { mode: 0 }; render();
+  }
+});
+canvas.addEventListener("mousedown", (e) => {
+  console.log(e);
+  let pos = getCharCoords(e);
+  let subpos = getSubPxCoords(e);
+  if (tool == TOOLS.Place) {
+    if (e.button == 2) {
+      screen.clearBuffer();
+      screen.interaction = {
+        mode: MODES.Idle,
+        pos: getCharCoords(e),
+      };
+      render();
+    }
+  } else if (tool == TOOLS.Draw) {
+    if (e.button == 2) {
+      if (screen.interaction.mode == MODES.Drawing) {
+        e.preventDefault();
+        screen.clearBuffer();
+        screen.interaction = {
+          mode: MODES.Idle,
+          pos: pos,
+          subpos: subpos,
+        }
+        render();
+      }
+    }
   }
 });
 canvas.addEventListener("contextmenu", (event) => {
