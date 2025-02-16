@@ -11,7 +11,7 @@ export class TerminalScreen extends ScreenRenderer {
   constructor(size, colors = DEFAULT_COLORS, border = 1, id, name) {
     super(size, colors, null, border);
     this.screen = [];
-    this.buffer = [];
+    this.buffer = {};
     this.id = id;
     this.name = name;
 
@@ -24,11 +24,7 @@ export class TerminalScreen extends ScreenRenderer {
       if (!this.screen[i]) {
         this.screen[i] = [];
       }
-      if (!this.buffer[i]) {
-        this.buffer[i] = [];
-      }
       this.screen[i].length = this.size.width;
-      this.buffer[i].length = this.size.width;
       for (var j = 0; j < this.size.width; j++) {
         if (!this.screen[i][j]) {
           this.screen[i][j] = {
@@ -37,7 +33,6 @@ export class TerminalScreen extends ScreenRenderer {
             bg: COLOR_NAMES.black,
           };
         };
-        this.buffer[i][j] = null;
       }
 
     }
@@ -47,17 +42,17 @@ export class TerminalScreen extends ScreenRenderer {
     for (let y = 0; y < this.size.height; y++) {
       for (let x = 0; x < this.size.width; x++) {
         let pixel;
-        if (this.buffer[y][x] === null) {
+        if (!this.buffer[[y, x]]) {
           pixel = this.screen[y][x]
-        } else if (this.buffer[y][x] instanceof SubPx) {
-          let [valid, char] = this.buffer[y][x].toChar();
+        } else if (this.buffer[[y, x]] instanceof SubPx) {
+          let [valid, char] = this.buffer[[y, x]].toChar();
           if (valid) {
             pixel = char;
           } else {
             pixel = this.screen[y][x];
           }
         } else {
-          pixel = this.buffer[y][x];
+          pixel = this.buffer[[y, x]];
         }
         super.drawChar(pixel.charId, x, y, pixel.fg, pixel.bg);
       }
@@ -68,7 +63,7 @@ export class TerminalScreen extends ScreenRenderer {
     fgColor = fgColor !== null ? fgColor : COLOR_NAMES.white;
     bgColor = bgColor !== null ? bgColor : COLOR_NAMES.black;
     if (0 <= x && x < this.size.width && 0 <= y && y < this.size.height) {
-      this.buffer[y][x] = {
+      this.buffer[[y, x]] = {
         charId: charId,
         fg: fgColor,
         bg: bgColor,
@@ -77,34 +72,58 @@ export class TerminalScreen extends ScreenRenderer {
     super.drawChar(charId, x, y, fgColor, bgColor);
   }
 
+  drawSubPx(sx, sy, color) {
+    let x = ~~(sx / 2);
+    let y = ~~(sy / 3);
+    if (0 <= x && x < this.size.width && 0 <= y && y < this.size.height) {
+      let px = sx % 2;
+      let py = sy % 3;
+      if (this.buffer[[y, x]] && this.buffer[[y, x]] instanceof SubPx) {
+        this.buffer[[y, x]].set(px, py, color);
+        this.ctx.fillStyle = this.colors[this.fgColor];
+        this.ctx.fillRect(
+          sx * 3 + this.border,
+          sy * 3 + this.border,
+          3, 3,
+        );
+      } else if (!this.buffer[[y, x]]) {
+        let char = this.get(x, y);
+        let newPx = new SubPx(char.charId, char.fg, char.bg);
+        newPx.set(px, py, color);
+        this.buffer[[y, x]] = newPx;
+        this.ctx.fillStyle = this.colors[this.fgColor];
+        this.ctx.fillRect(
+          sx * 3 + this.border,
+          sy * 3 + this.border,
+          3, 3,
+        );
+      }
+    }
+  }
+
   get(x, y) {
-    if (this.buffer[y][x] !== null) {
-      return this.buffer[y][x];
+    if (this.buffer[[y, x]]) {
+      return this.buffer[[y, x]];
     } else {
       return this.screen[y][x];
     }
   }
 
   commitBuffer() {
-    for (let y = 0; y < this.size.height; y++) {
-      for (let x = 0; x < this.size.width; x++) {
-        let pixel = this.buffer[y][x];
-        if (pixel !== null) {
-          if (pixel instanceof SubPx) {
-            let [valid, value] = pixel.toChar();
-            if (valid) {
-              this.screen[y][x] = value;
-            }
-          } else {
-            this.screen[y][x] = pixel;
-          }
-          this.buffer[y][x] = null;
+    for (const [key, pixel] of Object.entries(this.buffer)) {
+      let [y, x] = key.split(',').map(Number);
+      if (pixel instanceof SubPx) {
+        let [valid, value] = pixel.toChar();
+        if (valid) {
+          this.screen[y][x] = value;
         }
+      } else {
+        this.screen[y][x] = pixel;
       }
+      let char = this.screen[y][x];
+      super.drawChar(char.charId, x, y, char.fg, char.bg);
     }
-    // document.getElementById('debug').style.backgroundColor = "#0f0";
-    // setTimeout(() => { document.getElementById('debug').style.backgroundColor = null; }, 100)
-    this.render();
+    this.buffer = {};
     this.save();
   }
 
@@ -116,14 +135,14 @@ export class TerminalScreen extends ScreenRenderer {
   }
 
   clearBuffer() {
-    for (let y = 0; y < this.size.height; y++) {
-      for (let x = 0; x < this.size.width; x++) {
-        this.buffer[y][x] = null;
-      }
+    for (const [key, _] of Object.entries(this.buffer)) {
+      let [y, x] = key.split(',').map(Number);
+      let char = this.screen[y][x];
+      super.drawChar(char.charId, x, y, char.fg, char.bg);
     }
-    this.render();
-    document.getElementById('debug').style.backgroundColor = "#f00";
-    setTimeout(() => { document.getElementById('debug').style.backgroundColor = null; }, 100)
+    this.buffer = {};
+    // document.getElementById('debug').style.backgroundColor = "#f00";
+    // setTimeout(() => { document.getElementById('debug').style.backgroundColor = null; }, 100)
   }
 
   serialise() {

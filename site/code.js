@@ -382,12 +382,21 @@ let select = {
       let height = Math.abs(screen.interaction.point1.y - screen.interaction.point2.y) + 1;
       let originX = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
       let originY = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
-      for (let y = originY; y < originY + height; y++) {
-        for (let x = originX; x < originX + width; x++) {
-          screen.drawChar(32, x, y, screen.fgColor, screen.bgColor);
+      // we need to implement all this stuff here in order to improve performance on Chrome
+      for (let y = Math.max(0, originY); y < Math.min(originY + height, screen.size.height); y++) {
+        for (let x = Math.max(originX, 0); x < Math.min(originX + width, screen.size.width); x++) {
+          screen.screen[y][x] = {
+            charId: 32,
+            fg: screen.fgColor,
+            bg: screen.bgColor,
+          }
         }
       }
-      screen.commitBuffer();
+      screen.ctx.fillStyle = screen.colors[screen.bgColor];
+      screen.ctx.fillRect(Math.max(originX, 0) * 6 + screen.border, Math.max(originY, 0) * 9 + screen.border,
+        Math.min(width, screen.size.width - originX) * 6, Math.min(height, screen.size.height - originY) * 9,
+      );
+      screen.save();
       render();
     } else {
       executeKeybinds(e);
@@ -476,7 +485,7 @@ let draw = {
         screen.interaction.mode = MODES.Drawing;
         screen.interaction.pos = pos;
         screen.interaction.subpos = subpos;
-        setSubPx(subpos.x, subpos.y, screen.fgColor);
+        screen.drawSubPx(subpos.x, subpos.y, screen.fgColor);
       }
     } else if (e.button == 2) {
       if (screen.interaction.mode == MODES.Drawing) {
@@ -501,7 +510,7 @@ let draw = {
     } else if (screen.interaction.mode == MODES.Drawing) {
       if (!screen.interaction.type || screen.interaction.type == TYPES.Normal) {
         for (const [x, y] of line(screen.interaction.subpos.x, screen.interaction.subpos.y, subpos.x, subpos.y)) {
-          setSubPx(x, y, screen.fgColor);
+          screen.drawSubPx(x, y, screen.fgColor);
         }
       }
       screen.interaction.pos = pos;
@@ -558,11 +567,11 @@ let draw = {
   commit: (screen) => {
     if (screen.interaction.type == TYPES.Line) {
       for (const [x, y] of line(screen.interaction.point1.x, screen.interaction.point1.y, screen.interaction.subpos.x, screen.interaction.subpos.y)) {
-        setSubPx(x, y, screen.fgColor);
+        screen.drawSubPx(x, y, screen.fgColor);
       }
     } else if (screen.interaction.type == TYPES.Box) {
       for (const [x, y] of box(screen.interaction.point1.x, screen.interaction.point1.y, screen.interaction.subpos.x, screen.interaction.subpos.y)) {
-        setSubPx(x, y, screen.fgColor);
+        screen.drawSubPx(x, y, screen.fgColor);
       }
     }
     screen.commitBuffer();
@@ -908,39 +917,6 @@ refreshBlink()
 function resetBlink() {
   cursor.shown = true;
   cursor.latestUpdate = Date.now();
-}
-
-function setSubPx(sx, sy, color) {
-  let x = ~~(sx / 2);
-  let y = ~~(sy / 3);
-  if (0 <= x && x < screen.size.width && 0 <= y && y < screen.size.height) {
-    let px = sx % 2;
-    let py = sy % 3;
-    if (screen.buffer[y][x] && screen.buffer[y][x] instanceof SubPx) {
-      screen.buffer[y][x].set(px, py, color);
-      screen.ctx.fillStyle = screen.colors[screen.fgColor];
-      screen.ctx.fillRect(
-        sx * 3 + screen.border,
-        sy * 3 + screen.border,
-        3, 3,
-      );
-    } else if (!screen.buffer[y][x]) {
-      let char = screen.get(x, y);
-      let newPx = new SubPx(char.charId, char.fg, char.bg);
-      newPx.set(px, py, color);
-      screen.buffer[y][x] = newPx;
-      screen.ctx.fillStyle = screen.colors[screen.fgColor];
-      screen.ctx.fillRect(
-        sx * 3 + screen.border,
-        sy * 3 + screen.border,
-        3, 3,
-      );
-      // let [valid, newChar] = px.toChar();
-      // if (valid) {
-      //   screen.drawChar(newChar.charId, x, y, newChar.fg, newChar.bg);
-      // }
-    }
-  }
 }
 
 function pointMove(e) {
