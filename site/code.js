@@ -2,9 +2,7 @@ import { SIZES, FONT, ScreenRenderer, COLOR_NAMES, DEFAULT_COLORS, SIZE_TYPES } 
 import { Hct, argbFromHex } from './utils.js';
 import { TerminalScreen, bimgExport, bimgImport } from "./screen.js";
 
-import { SubPx } from './subpxutils.js';
-
-// import {serialize} from './textutils.js';
+import { serialize } from './textutils.js';
 // 
 // console.log(serialize({
 //   'a': 1,
@@ -1078,6 +1076,52 @@ function setSettingsPills() {
 document.getElementById("size_select").addEventListener('closed', (select) => {
   select.target.childNodes.forEach((item) => { if (item.selected) { selectSizeType(item.value) } });
 });
+
+// document.getElementById('initiate_code_export').addEventListener('click', () => {
+//   document.getElementById('code_select').disabled = !(tool == TOOLS.Select && screen.interaction.mode == MODES.Selected);
+//   if (!(tool == TOOLS.Select && screen.interaction.mode == MODES.Selected)) {
+//     document.getElementById('code_select').checked = false;
+//   }
+//   document.getElementById('properties').close();
+//   document.getElementById('code_dialog').show();
+// });
+document.getElementById('initiate_bimg_export').addEventListener('click', () => {
+  document.getElementById('bimg_select').disabled = !(tool == TOOLS.Select && screen.interaction.mode == MODES.Selected);
+  if (!(tool == TOOLS.Select && screen.interaction.mode == MODES.Selected)) {
+    document.getElementById('bimg_select').checked = false;
+  }
+  document.getElementById('properties').close();
+  document.getElementById('bimg_dialog').show();
+});
+
+function downloadFile(data, filename) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+
+document.getElementById('bimg_export').addEventListener('click', () => {
+  let selection = document.getElementById('bimg_select').checked;
+  let x, y, width, height
+  if (selection) {
+    width = Math.abs(screen.interaction.point1.x - screen.interaction.point2.x) + 1;
+    height = Math.abs(screen.interaction.point1.y - screen.interaction.point2.y) + 1;
+    x = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
+    y = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
+  } else {
+    x = 0; y = 0; width = screen.width; height = screen.height;
+  }
+  let rawData = bimgExport(screen, width, height, x, y);
+  console.log(rawData);
+  let data = serialize(rawData);
+  downloadFile(data, "image.bimg");
+  document.getElementById('bimg_dialog').close();
+});
+
 function openProperties() {
   selectSizeType(screen.size.type);
   settingsColors = structuredClone(screen.colors);
@@ -1241,3 +1285,6 @@ function deleteProject() {
   document.getElementById('delete_confirmation').close();
 }
 document.getElementById('delete_project').addEventListener('click', deleteProject);
+document.getElementById('delete_confirmation').addEventListener('close', () => {
+  document.getElementById('properties').show();
+});

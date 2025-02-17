@@ -199,13 +199,14 @@
     </div>
   </div>
 
-  <md-dialog id="delete_confirmation" style="z-index: 99;">
+  <md-dialog id="delete_confirmation" style="z-index: 99;" type="alert">
     <div slot="headline">Permanently delete this project?</div>
     <md-icon slot="icon">delete_forever</md-icon>
     <div slot="actions">
-      <md-text-button id="delete_project">Delete</md-text-button>
+      <md-text-button id="delete_project"
+        style="--md-sys-color-primary: var(--md-sys-color-error)">Delete</md-text-button>
       <md-filled-tonal-button
-        onclick="document.getElementById('delete_confirmation').close(); document.getElementById('properties').show();">Cancel</md-filled-tonal-button>
+        onclick="document.getElementById('delete_confirmation').close();">Cancel</md-filled-tonal-button>
     </div>
   </md-dialog>
 
@@ -218,6 +219,18 @@
       <md-outlined-text-field label="Project name" value="My project" id="project_name">
       </md-outlined-text-field>
       <div style="margin-top: 8px;">
+        <span style="position: relative">
+          <md-text-button id="usage-anchor" onclick="document.getElementById('usage-menu').show()">Export
+            <md-icon slot="icon">download</md-icon></md-text-button>
+          <md-menu id="usage-menu" anchor="usage-anchor">
+            <!-- <md-menu-item> -->
+            <!--   <div slot="headline" id="initiate_code_export">Code</div> -->
+            <!-- </md-menu-item> -->
+            <md-menu-item>
+              <div slot="headline" id="initiate_bimg_export">BIMG</div>
+            </md-menu-item>
+          </md-menu>
+        </span>
         <md-text-button
           onclick="document.getElementById('properties').close(); document.getElementById('delete_confirmation').show()">
           Delete project
@@ -377,6 +390,47 @@
     </div>
     <div slot="actions">
       <md-text-button onclick="document.getElementById('projects_dialog').close()">Close</md-text-button>
+    </div>
+  </md-dialog>
+
+  <md-dialog id="code_dialog">
+    <div slot="headline">Code export</div>
+    <div slot="content" class="vertical">
+      <label class="md-typescale-title-medium" style="margin-bottom: 12px;"> Offset </label>
+      <div class="horizontal">
+        <md-outlined-text-field value="0" id="code_offset_x">
+        </md-outlined-text-field>
+        <md-outlined-text-field value="0" style="padding-left: 8px;" id="code_offset_y">
+        </md-outlined-text-field>
+      </div>
+      <div class="hint" style="margin-top: 8px;">
+        <md-icon style="padding: 8px;">lightbulb</md-icon>
+        <p>You can use anything for offset, including variables.</p>
+      </div>
+      <label style="display: flex; align-items: center; padding-top: 8px;">
+        <md-checkbox touch-target="wrapper" id="code_select"></md-checkbox>
+        Only export selection
+      </label>
+    </div>
+    <div slot="actions">
+      <md-text-button id="code_export">Export</md-text-button>
+    </div>
+  </md-dialog>
+
+  <md-dialog id="bimg_dialog">
+    <div slot="headline">BIMG export</div>
+    <div slot="content" class="vertical">
+      <label style="display: flex; align-items: center;">
+        <md-checkbox touch-target="wrapper" id="bimg_select"></md-checkbox>
+        Only export selection
+      </label>
+      <!-- <label style="display: flex; align-items: center; padding-top: 16px;"> -->
+      <!--   <md-checkbox touch-target="wrapper" id="bimg_palette"></md-checkbox> -->
+      <!--   Include palette -->
+      <!-- </label> -->
+    </div>
+    <div slot="actions">
+      <md-text-button id="bimg_export">Export</md-text-button>
     </div>
   </md-dialog>
 </body>

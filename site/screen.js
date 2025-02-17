@@ -197,14 +197,14 @@ export function bimgExport(screen, width, height, x, y) {
     let bg = "";
     let fg = "";
     for (let j = 0; j < width; j++) {
-      console.log(i, j);
+      // console.log(i, j);
       char += String.fromCharCode(screen.screen[i + y][j + x].charId);
       bg += screen.screen[i + y][j + x].bg.toString(16);
       fg += screen.screen[i + y][j + x].fg.toString(16);
     }
-    data[i.toString()] = [char, fg, bg]; // this is ugly and will be changed once bimg is fully supported
+    data[i] = [char, fg, bg]; // this is ugly and will be changed once bimg is fully supported
   }
-  let img = { "0": data };
+  let img = { 0: data };
   img.version = "1.0.0";
   img.creator = "prototuipe";
   img.width = width;

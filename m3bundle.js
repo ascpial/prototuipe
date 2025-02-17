@@ -16,6 +16,9 @@ import '@material/web/select/outlined-select';
 import '@material/web/select/select-option';
 import '@material/web/ripple/ripple';
 import '@material/web/button/filled-tonal-button';
+import '@material/web/menu/menu';
+import '@material/web/menu/menu-item';
+
 import {styles} from '@material/web/typography/md-typescale-styles';
 document.adoptedStyleSheets.push(styles.styleSheet);
 

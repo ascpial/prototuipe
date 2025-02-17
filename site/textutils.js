@@ -49,11 +49,11 @@ export function serialize(obj, cur_indent) {
       let [open, sub_indent, open_key, close_key, equal, comma] = ["{\n", cur_indent+ "  ", "[ ", " ] = ", " = ", ",\n"];
       let result = open;
       let seen_keys = {};
-      for (let i=0; obj[i]!==undefined; i++) {
-        seen_keys[key] = true;
-        result = result + sub_indent + serialize(value, sub_indent) + comma;
-      }
-      for (const [key, value] of Object.entries(obj)) {
+    for (let i=0; obj[i]!==undefined; i++) {
+      seen_keys[i] = true;
+      result = result + sub_indent + serialize(obj[i], sub_indent) + comma;
+    }
+    for (const [key, value] of Object.entries(obj)) {
         if (!seen_keys[key]) {
           result += sub_indent;
           if (typeof key == "string" && !g_tLuaKeywords[key] && /^[a-zA-Z_][\w]*$/.test(key)) {

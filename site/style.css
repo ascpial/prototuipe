@@ -335,3 +335,13 @@ md-dialog {
 .project_card.selected .headline label {
   color: var(--md-sys-color-on-secondary);
 }
+
+.hint {
+  display: flex;
+  flex-direction: horizontal;
+  align-items: center;
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+  border-radius: 16px;
+  padding: 8px;
+}
