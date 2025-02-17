@@ -326,7 +326,6 @@ let select = {
       }
     } else if (e.button == 2) {
       if (screen.interaction.mode != MODES.Idle) {
-        console.log('cancel')
         screen.interaction = { mode: MODES.Idle };
         screen.clearBuffer();
         render();
@@ -955,7 +954,6 @@ canvas.addEventListener("pointerleave", (event) => {
   }
 });
 canvas.addEventListener("mousedown", (e) => {
-  console.log(e);
   let pos = getCharCoords(e);
   let subpos = getSubPxCoords(e);
   if (tool == TOOLS.Place) {
@@ -1129,7 +1127,6 @@ function saveProperties() {
         scale = Number(elt.value);
       }
     });
-    console.log(scale);
     screen.size = {
       mwidth: width,
       mheight: height,
@@ -1138,7 +1135,6 @@ function saveProperties() {
       type: type,
       scale: scale,
     };
-    console.log(screen.size.width, screen.size.height);
   }
   screen.canvas.width = screen.size.width * 6 + 2 * screen.border;
   screen.canvas.height = screen.size.height * 9 + 2 * screen.border;
@@ -1184,6 +1180,7 @@ function openProjects() {
       headline.classList.add("headline");
       let name = document.createElement("label");
       name.innerHTML = project.name;
+      name.classList.add("md-typescale-title-medium")
       headline.append(name);
       card.appendChild(headline);
       let preview = document.createElement("div");

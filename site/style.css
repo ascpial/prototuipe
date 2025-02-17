@@ -11,6 +11,19 @@
   flex-direction: row;
 }
 
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.left {
+  flex-grow: 1;
+}
+
+.right {
+  flex-grow: 0;
+}
+
 @font-face {
   font-family: 'Material Symbols Outlined';
   font-style: normal;
@@ -35,7 +48,7 @@
 :root {
   font-family: 'Roboto', sans-serif;
   --md-ref-typeface-brand: 'sans-serif';
-  --md-ref-typeface-plain: system-ui;
+  --md-ref-typeface-plain: 'sans-serif';
   --md-icon-font: 'Material Symbols Outlined';
   --pill-size: 40px;
 }
@@ -118,14 +131,7 @@ body {
   opacity: 1;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-}
 
-.left {
-  flex-grow: 1;
-}
 
 .selected-tool {
   --md-filled-tonal-icon-button-container-color: var(--md-sys-color-primary);
@@ -133,10 +139,6 @@ body {
 
 .selected-tool md-icon {
   color: var(--md-sys-color-on-primary)
-}
-
-.right {
-  flex-grow: 0;
 }
 
 .color-picker {
@@ -312,21 +314,22 @@ md-dialog {
 }
 
 .project_card .headline {
-  height: 30px;
+  height: 28px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   padding-left: 10px;
   padding-right: 10px;
+  padding-top: 4px;
 }
 
 .project_card .headline label {
-  color: var(--md-sys-color-on-secondary-container);
-  font-size: 16px;
-  font-weight: 600;
+  /* color: var(--md-sys-color-on-secondary-container); */
+  /* font-size: 16px; */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 }
 
 .project_card.selected .headline label {
