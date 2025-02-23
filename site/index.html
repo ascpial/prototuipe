@@ -219,18 +219,10 @@
       <md-outlined-text-field label="Project name" value="My project" id="project_name">
       </md-outlined-text-field>
       <div style="margin-top: 8px;">
-        <span style="position: relative">
-          <md-text-button id="usage-anchor" onclick="document.getElementById('usage-menu').show()">Export
-            <md-icon slot="icon">download</md-icon></md-text-button>
-          <md-menu id="usage-menu" anchor="usage-anchor">
-            <!-- <md-menu-item> -->
-            <!--   <div slot="headline" id="initiate_code_export">Code</div> -->
-            <!-- </md-menu-item> -->
-            <md-menu-item>
-              <div slot="headline" id="initiate_bimg_export">BIMG</div>
-            </md-menu-item>
-          </md-menu>
-        </span>
+        <md-text-button id="initiate_bimg_export">Export BIMG
+          <md-icon slot="icon">download</md-icon>
+        </md-text-button>
+
         <md-text-button
           onclick="document.getElementById('properties').close(); document.getElementById('delete_confirmation').show()">
           Delete project

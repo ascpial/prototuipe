@@ -60,7 +60,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background-color: var(--md-sys-color-surface-bright);
+  background-color: var(--md-sys-color-surface-container-high);
 }
 
 #tools_panel {
