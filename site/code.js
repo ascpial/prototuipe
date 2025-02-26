@@ -778,12 +778,12 @@ function load() {
 export function setTool(newTool) {
   commitInteraction();
   if (tool == TOOLS.Draw && newTool != TOOLS.Draw) {
-    document.getElementById('bg_button').removeAttribute('disabled');
+    document.getElementById('bg_icon').style.opacity = 1;
     for (let i = 0; i < 16; i++) {
       document.getElementById('bg' + i).removeAttribute('disabled');
     }
   } else if (newTool == TOOLS.Draw && tool != TOOLS.Draw) {
-    document.getElementById('bg_button').setAttribute('disabled', "true");
+    document.getElementById('bg_icon').style.opacity = 0.38;
     for (let i = 0; i < 16; i++) {
       document.getElementById('bg' + i).setAttribute('disabled', "true");
     }
