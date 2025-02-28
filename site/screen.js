@@ -82,8 +82,8 @@ export class TerminalScreen extends ScreenRenderer {
         this.buffer[[y, x]].set(px, py, color);
         this.ctx.fillStyle = this.colors[this.fgColor];
         this.ctx.fillRect(
-          sx * 3 + this.border-size,
-          sy * 3 + this.border-size,
+          sx * 3 + this.border,
+          sy * 3 + this.border,
           3, 3,
         );
       } else if (!this.buffer[[y, x]]) {
@@ -93,8 +93,8 @@ export class TerminalScreen extends ScreenRenderer {
         this.buffer[[y, x]] = newPx;
         this.ctx.fillStyle = this.colors[this.fgColor];
         this.ctx.fillRect(
-          sx * 3 + this.border-size,
-          sy * 3 + this.border-size,
+          sx * 3 + this.border,
+          sy * 3 + this.border,
           3, 3,
         );
       }
