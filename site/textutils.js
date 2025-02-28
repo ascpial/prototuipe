@@ -27,7 +27,7 @@ export function serialize(obj, cur_indent) {
     cur_indent = "";
   }
   if (typeof obj == "string") {
-    return JSON.stringify(obj);
+    return "\"" + obj.replaceAll("\"", "\\\"") + "\"";
   } else if (typeof obj == "number") {
     if (obj !== obj) {
       return "0/0";

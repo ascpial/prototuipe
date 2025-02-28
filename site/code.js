@@ -745,13 +745,12 @@ function updatePills() {
 
 function addChars() {
   let container = document.getElementById("chars");
-  let colorBg = getComputedStyle(document.body).getPropertyValue('--md-sys-color-surface-container-lowest');
   let colorFg = getComputedStyle(document.body).getPropertyValue('--md-sys-color-on-surface');
   let colors = DEFAULT_COLORS.slice();
   colors[COLOR_NAMES.white] = colorFg;
   colors[COLOR_NAMES.black] = "#00000000";
   let charScreen = new ScreenRenderer({ width: 1, height: 1 }, colors);
-  // container.innerHTML = '';
+  container.innerHTML = '';
   for (let charId = 0; charId < 16 * 16; charId++) {
     charScreen.ctx.clearRect(0, 0, charScreen.canvas.width, charScreen.canvas.height);
     charScreen.drawChar(charId, 0, 0);
@@ -760,10 +759,11 @@ function addChars() {
     img.src = charScreen.canvas.toDataURL();
     img.classList.add("char")
     button.appendChild(img);
-    button.onclick = (e) => selectChar(charId)
+    button.onclick = () => selectChar(charId)
     container.appendChild(button);
   }
 }
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', addChars)
 
 function load() {
   addChars();
@@ -876,7 +876,7 @@ function render() {
 
 function refreshBlink() {
   // This is only used to update the blinking cursor for text input
-  window.setTimeout(refreshBlink, 650);
+  // window.setTimeout(refreshBlink, 650);
   if (cursor.latestUpdate) {
     if (Date.now() - cursor.latestUpdate >= 1000) {
       cursor.shown = false;
@@ -889,7 +889,7 @@ function refreshBlink() {
   }
 }
 
-refreshBlink()
+setInterval(refreshBlink, 650)
 
 function resetBlink() {
   cursor.shown = true;
@@ -1127,7 +1127,10 @@ function openProperties() {
   settingsColors = structuredClone(screen.colors);
   setSettingsPills();
   document.getElementById("project_name").value = screen.name;
-  document.getElementById("properties").show();
+  document.getElementById("draw_border").checked = screen.drawBorder;
+  let properties = document.getElementById("properties");
+  properties.shadowRoot.querySelector('.scroller').scrollTo(0, 0)
+  properties.show();
 }
 document.getElementById('settings').onclick = openProperties;
 
@@ -1150,6 +1153,7 @@ function saveProperties() {
   bufferScreen.colors = settingsColors;
   updatePills();
   screen.name = document.getElementById("project_name").value;
+  screen.drawBorder = document.getElementById("draw_border").checked;
   let width = Number(document.getElementById("size_width").value);
   let height = Number(document.getElementById("size_height").value);
   let type;
@@ -1265,6 +1269,7 @@ function openProjects() {
 }
 document.getElementById('open_projects').onclick = openProjects
 
+let didDelete = false;
 function deleteProject() {
   let i = projects.indexOf(screen.id);
   if (i > -1) {
@@ -1282,9 +1287,15 @@ function deleteProject() {
   screen.save();
   make_fit();
   render();
+  didDelete = true
   document.getElementById('delete_confirmation').close();
 }
 document.getElementById('delete_project').addEventListener('click', deleteProject);
+document.getElementById('delete_confirmation').addEventListener('open', () => {
+  didDelete = false;
+});
 document.getElementById('delete_confirmation').addEventListener('close', () => {
+  if (!didDelete) {
   document.getElementById('properties').show();
+  }
 });

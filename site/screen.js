@@ -8,8 +8,8 @@ export class TerminalScreen extends ScreenRenderer {
   selectedChar;
   name;
 
-  constructor(size, colors = DEFAULT_COLORS, border = 1, id, name) {
-    super(size, colors, null, border);
+  constructor(size, colors = DEFAULT_COLORS, border = 1, id, name, drawBorder) {
+    super(size, colors, null, border, drawBorder);
     this.screen = [];
     this.buffer = {};
     this.id = id;
@@ -82,8 +82,8 @@ export class TerminalScreen extends ScreenRenderer {
         this.buffer[[y, x]].set(px, py, color);
         this.ctx.fillStyle = this.colors[this.fgColor];
         this.ctx.fillRect(
-          sx * 3 + this.border,
-          sy * 3 + this.border,
+          sx * 3 + this.border-size,
+          sy * 3 + this.border-size,
           3, 3,
         );
       } else if (!this.buffer[[y, x]]) {
@@ -93,8 +93,8 @@ export class TerminalScreen extends ScreenRenderer {
         this.buffer[[y, x]] = newPx;
         this.ctx.fillStyle = this.colors[this.fgColor];
         this.ctx.fillRect(
-          sx * 3 + this.border,
-          sy * 3 + this.border,
+          sx * 3 + this.border-size,
+          sy * 3 + this.border-size,
           3, 3,
         );
       }
@@ -164,6 +164,7 @@ export class TerminalScreen extends ScreenRenderer {
     serialised.palette = this.colors;
     serialised.preview = this.canvas.toDataURL();
     serialised.name = this.name;
+    serialised.drawBorder = this.drawBorder;
     return serialised;
   }
 
@@ -180,7 +181,7 @@ export class TerminalScreen extends ScreenRenderer {
 }
 
 TerminalScreen.unserialise = (data, id, border) => {
-  let screen = new TerminalScreen(data.size, data.palette, border, id, data.name);
+  let screen = new TerminalScreen(data.size, data.palette, border, id, data.name, data.drawBorder);
   screen.load(data.screen);
   return screen;
 }
@@ -198,7 +199,9 @@ export function bimgExport(screen, width, height, x, y) {
     let fg = "";
     for (let j = 0; j < width; j++) {
       // console.log(i, j);
-      char += String.fromCharCode(screen.screen[i + y][j + x].charId);
+      char += "\\x" + ("0" + screen.screen[i+y][j+x].charId.toString(16)).slice(-2);
+      console.log(char)
+      // char += String.fromCharCode(screen.screen[i + y][j + x].charId);
       bg += screen.screen[i + y][j + x].bg.toString(16);
       fg += screen.screen[i + y][j + x].fg.toString(16);
     }

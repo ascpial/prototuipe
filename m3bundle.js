@@ -18,6 +18,7 @@ import '@material/web/ripple/ripple';
 import '@material/web/button/filled-tonal-button';
 import '@material/web/menu/menu';
 import '@material/web/menu/menu-item';
+import '@material/web/progress/circular-progress';
 
 import {styles} from '@material/web/typography/md-typescale-styles';
 document.adoptedStyleSheets.push(styles.styleSheet);

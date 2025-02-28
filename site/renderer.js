@@ -58,12 +58,13 @@ export class ScreenRenderer {
   colors;
   size;
   border;
+  drawBorder;
 
-  constructor(size, colors = null, canvas = null, border=1) {
+  constructor(size, colors = null, canvas = null, border = 1, drawBorder) {
     if (!canvas) {
       this.canvas = document.createElement('canvas');
-      this.canvas.width = size.width * 6 + 2*border;
-      this.canvas.height = size.height * 9 + 2*border;
+      this.canvas.width = size.width * 6 + 2 * border;
+      this.canvas.height = size.height * 9 + 2 * border;
       this.ctx = this.canvas.getContext('2d');
       this.ctx.fillStyle = colors[COLOR_NAMES.black];
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -72,6 +73,7 @@ export class ScreenRenderer {
       this.ctx = canvas.getContext('2d');
     }
     this.border = border;
+    this.drawBorder = drawBorder ? drawBorder : false;
     this.size = size;
     this.colors = colors ? colors : structuredClone(colors);
 
@@ -91,7 +93,30 @@ export class ScreenRenderer {
       this.ctx.fillStyle = this.colors[bgColor];
       this.ctx.fillRect(x * 6 + this.border, y * 9 + this.border, 6, 9)
 
-      if (this.cachedCharId != charId || this.cachedFg != fgColor) {
+      if (this.drawBorder) {
+        if (x == 0) {
+          this.ctx.fillRect((x - 1) * 6 + this.border, y * 9 + this.border, 6, 9);
+          if (y == 0) {
+            this.ctx.fillRect((x - 1) * 6 + this.border, (y - 1) * 9 + this.border, 6, 9);
+          } else if (y == this.size.height - 1) {
+            this.ctx.fillRect((x - 1) * 6 + this.border, (y + 1) * 9 + this.border, 6, 9);
+          }
+        } else if (x == this.size.width - 1) {
+          this.ctx.fillRect((x + 1) * 6 + this.border, y * 9 + this.border, 6, 9);
+          if (y == 0) {
+            this.ctx.fillRect((x + 1) * 6 + this.border, (y - 1) * 9 + this.border, 6, 9);
+          } else if (y == this.size.height - 1) {
+            this.ctx.fillRect((x + 1) * 6 + this.border, (y + 1) * 9 + this.border, 6, 9);
+          }
+        }
+        if (y == 0) {
+          this.ctx.fillRect(x * 6 + this.border, (y - 1) * 9 + this.border, 6, 9);
+        } else if (y == this.size.height - 1) {
+          this.ctx.fillRect(x * 6 + this.border, (y + 1) * 9 + this.border, 6, 9);
+        }
+      }
+
+      if (this.cachedCharId != charId || this.cachedFg != fgColor) {
         let sourceX = (charId % 16) * 8 + 1
         let sourceY = ~~(charId / 16) * 11 + 1
         this.cacheCtx.globalCompositeOperation = "source-over";
