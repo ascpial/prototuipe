@@ -199,9 +199,14 @@ export function bimgExport(screen, width, height, x, y) {
     let fg = "";
     for (let j = 0; j < width; j++) {
       // console.log(i, j);
-      char += "\\x" + ("0" + screen.screen[i+y][j+x].charId.toString(16)).slice(-2);
+      let charId = screen.screen[i+y][j+x].charId
+      if (charId < 33 || charId > 126) {
+      char += "\\x" + ("0" + charId.toString(16)).slice(-2);
+      }
+      else {
+        char += String.fromCharCode(charId)
+      }
       console.log(char)
-      // char += String.fromCharCode(screen.screen[i + y][j + x].charId);
       bg += screen.screen[i + y][j + x].bg.toString(16);
       fg += screen.screen[i + y][j + x].fg.toString(16);
     }
