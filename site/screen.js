@@ -1,5 +1,6 @@
 import { ScreenRenderer, DEFAULT_COLORS, COLOR_NAMES } from "./renderer.js";
 import { SubPx } from './subpxutils.js';
+import { History } from './history.js';
 
 export class TerminalScreen extends ScreenRenderer {
   interaction;
@@ -7,6 +8,7 @@ export class TerminalScreen extends ScreenRenderer {
   bgColor;
   selectedChar;
   name;
+  history;
 
   constructor(size, colors = DEFAULT_COLORS, border = 1, id, name, drawBorder) {
     super(size, colors, null, border, drawBorder);
@@ -14,6 +16,7 @@ export class TerminalScreen extends ScreenRenderer {
     this.buffer = {};
     this.id = id;
     this.name = name;
+    this.history = new History(this);
 
     this.fixEmptyChars()
   }
@@ -109,7 +112,10 @@ export class TerminalScreen extends ScreenRenderer {
     }
   }
 
-  commitBuffer() {
+  commitBuffer(saveHistory=true) {
+    if (saveHistory) {
+      this.history.takeSnapshot();
+    }
     for (const [key, pixel] of Object.entries(this.buffer)) {
       let [y, x] = key.split(',').map(Number);
       if (pixel instanceof SubPx) {

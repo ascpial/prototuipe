@@ -850,6 +850,14 @@ function commitInteraction() {
   }
 }
 
+function undo() {
+  screen.interaction = { mode: MODES.Idle };
+  screen.clearBuffer();
+  screen.history.undo();
+  render();
+}
+document.getElementById("undo").addEventListener('click', undo);
+
 const SELECTION_COLOR = DEFAULT_COLORS[COLOR_NAMES.yellow];
 
 let cursor = { shown: true, latestUpdate: null }
@@ -916,6 +924,9 @@ function pointUp(e) {
 
 
 function executeKeybinds(e) {
+  if (e.ctrlKey && e.key == "z") {
+    undo();
+  }
   if (e.key == "s") {
     setTool(TOOLS.Select);
   } else if (e.key == "t") {
