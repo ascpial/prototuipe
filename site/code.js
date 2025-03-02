@@ -822,9 +822,7 @@ interaction = { mode: MODES.Idle };
 let tool = TOOLS.Place;
 
 function selectChar(charId) {
-  if (tool == TOOLS.Place) {
-    screen.selectedChar = charId;
-  } else if (screen.interaction.mode == MODES.Selected) {
+  if (screen.interaction.mode == MODES.Selected) {
     commitInteraction();
     let minX = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
     let minY = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
@@ -841,6 +839,8 @@ function selectChar(charId) {
       }
     }
     screen.commitBuffer();
+  } else {
+    screen.selectedChar = charId;
   }
 }
 
@@ -1296,6 +1296,6 @@ document.getElementById('delete_confirmation').addEventListener('open', () => {
 });
 document.getElementById('delete_confirmation').addEventListener('close', () => {
   if (!didDelete) {
-  document.getElementById('properties').show();
+    document.getElementById('properties').show();
   }
 });

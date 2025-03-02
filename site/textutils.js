@@ -27,7 +27,20 @@ export function serialize(obj, cur_indent) {
     cur_indent = "";
   }
   if (typeof obj == "string") {
-    return "\"" + obj.replaceAll("\"", "\\\"") + "\"";
+    let value = "\"";
+    for (let j=0; j < obj.length; j++) {
+      let char = obj.charCodeAt(j);
+      if (char < 33 || char > 126) {
+        value += "\\x" + ("0" + char.toString(16)).slice(-2);
+      } else if (char == 92) {
+        value += "\\\\";
+      } else if (char == 34) {
+        value += "\\\"";
+      } else {
+        value += obj[j]
+      }
+    }
+    return value + "\"";
   } else if (typeof obj == "number") {
     if (obj !== obj) {
       return "0/0";

@@ -198,15 +198,8 @@ export function bimgExport(screen, width, height, x, y) {
     let bg = "";
     let fg = "";
     for (let j = 0; j < width; j++) {
-      // console.log(i, j);
-      let charId = screen.screen[i+y][j+x].charId
-      if (charId < 33 || charId > 126) {
-      char += "\\x" + ("0" + charId.toString(16)).slice(-2);
-      }
-      else {
-        char += String.fromCharCode(charId)
-      }
-      console.log(char)
+      let charId = screen.screen[i + y][j + x].charId
+      char += String.fromCharCode(charId)
       bg += screen.screen[i + y][j + x].bg.toString(16);
       fg += screen.screen[i + y][j + x].fg.toString(16);
     }
@@ -241,6 +234,7 @@ export function bimgImport(img, screen, x, y, width, height) {
     let char = row[0];
     let fgs = row[1];
     let bgs = row[2];
+
     for (let j = 0; j < width; j++) {
       let charId = char.charCodeAt(j);
       let fg = fgs[j] != " " ? parseInt(fgs[j], 16) : null;
