@@ -207,6 +207,7 @@ table.colors md-filled-icon-button {
 }
 
 .chars {
+  position: relative;
   margin-top: 10px;
   flex-grow: 1;
   flex-shrink: 1;
@@ -230,6 +231,7 @@ table.colors md-filled-icon-button {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  z-index: 3;
 }
 
 img.char {
@@ -251,6 +253,26 @@ img.char {
 .size-settings {
   display: flex;
   flex-direction: column;
+}
+
+.font_preview_area {
+  position: relative;
+}
+.font_buttons {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+}
+
+
+#font_preview {
+  width: 100%;
+  background-color: #000;
+  border-radius: 24px;
+  image-rendering: pixelated;
 }
 
 md-filled-text-field.small {

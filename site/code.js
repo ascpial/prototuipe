@@ -1125,6 +1125,17 @@ function downloadFile(data, filename) {
   document.body.removeChild(element);
 }
 
+function uploadFile() {
+  let input = document.createElement('input');
+  input.type = "file";
+  input.name = "my_files[]";
+  input.accept = "image/png";
+  document.body.appendChild(input);
+  input.click();
+  document.body.removeChild(input);
+}
+// document.getElementById("upload_font").addEventListener('click', uploadFile);
+
 document.getElementById('bimg_export').addEventListener('click', () => {
   let selection = document.getElementById('bimg_select').checked;
   let x, y, width, height
@@ -1152,6 +1163,7 @@ function openProperties() {
   document.getElementById("draw_border").checked = screen.drawBorder;
   let properties = document.getElementById("properties");
   properties.shadowRoot.querySelector('.scroller').scrollTo(0, 0)
+  // document.getElementById("font_preview").src = FONT.src;
   properties.show();
 }
 document.getElementById('settings').onclick = openProperties;

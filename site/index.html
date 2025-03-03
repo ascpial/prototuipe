@@ -176,8 +176,33 @@
       </table>
     </div>
     <div class="chars">
+      <div
+        style="display: none; position: absolute; top:0px; width: 100%; background: linear-gradient(var(--md-sys-color-surface-container-lowest), #0000); height: 60px; z-index: 4;"
+        id="scroll-top">
+      </div>
       <div id="chars">
       </div>
+      <div
+        style="display: none; position: absolute; bottom:0px; width: 100%; background: linear-gradient(#0000, var(--md-sys-color-surface-container-lowest)); height: 60px; z-index: 4;"
+        id="scroll-bottom">
+      </div>
+      <script>
+        let scrollTop = document.getElementById('scroll-top');
+        let scrollBottom = document.getElementById('scroll-bottom');
+        let chars = document.getElementById('chars');
+        chars.addEventListener('scroll', () => {
+          if (chars.scrollTop == 0) {
+            scrollTop.style.display = "none";
+          } else {
+            scrollTop.style.display = "block";
+          }
+          if (Math.abs(chars.scrollHeight - chars.clientHeight - chars.scrollTop) <= 1) {
+            scrollBottom.style.display = "none";
+          } else {
+            scrollBottom.style.display = "block";
+          }
+        })
+      </script>
     </div>
     <div class="row" style="margin-top: 10px;">
       <div class="left">
@@ -369,13 +394,29 @@
           <td><md-filled-icon-button id="p15"></md-filled-icon-button></td>
         </tr>
       </table>
-      <div class="row" style="margin-bottom: 16px; margin-top: 8px;">
+      <div class="row" style="margin-top: 8px;">
         <div class="left"></div>
         <md-text-button id="reset_pcolor" class="right" trailing-icon>
           Reset
           <md-icon slot="icon"> delete_forever </md-icon>
         </md-text-button>
       </div>
+      <!-- <label class="md-typescale-title-medium" style="margin-bottom: 12px; margin-top: 12px;"> -->
+      <!--   Custom font -->
+      <!-- </label> -->
+      <!-- <div class="font_preview_area"> -->
+      <!--   <img id="font_preview"> -->
+      <!--   </img> -->
+      <!--   <div class="font_buttons"> -->
+      <!--     <md-filled-tonal-icon-button title="Change font" style="margin-right: 8px;" id="upload_font"> -->
+      <!--       <md-icon>upload_file</md-icon> -->
+      <!--     </md-filled-tonal-icon-button> -->
+      <!--     <md-filled-tonal-icon-button title="Reset font" -->
+      <!--       style="--md-sys-color-secondary-container: var(--md-sys-color-error-container); --md-sys-color-on-secondary-container: var(--md-sys-color-on-error-container);"> -->
+      <!--       <md-icon>delete_forever</md-icon> -->
+      <!--     </md-filled-tonal-icon-button> -->
+      <!--   </div> -->
+      <!-- </div> -->
     </div>
     <div slot="actions">
       <md-text-button id="cancel_properties">Cancel</md-text-button>
