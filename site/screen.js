@@ -112,7 +112,7 @@ export class TerminalScreen extends ScreenRenderer {
     }
   }
 
-  commitBuffer(saveHistory=true) {
+  commitBuffer(saveHistory = true, draw = true) {
     if (saveHistory) {
       this.history.takeSnapshot();
     }
@@ -127,7 +127,9 @@ export class TerminalScreen extends ScreenRenderer {
         this.screen[y][x] = pixel;
       }
       let char = this.screen[y][x];
-      super.drawChar(char.charId, x, y, char.fg, char.bg);
+      if (draw) {
+        super.drawChar(char.charId, x, y, char.fg, char.bg);
+      }
     }
     this.buffer = {};
     this.save();

@@ -38,6 +38,7 @@ export class History {
 
       this.snapshots[this.latest] = snapshot;
       document.getElementById('undo').disabled = (this.current == this.oldest);
+      document.getElementById('redo').disabled = (this.current == this.latest);
     }
   }
 
@@ -48,6 +49,18 @@ export class History {
       this.screen.commitBuffer(false);
       this.current = (((this.current - 1) % this.size) + this.size) % this.size;
       document.getElementById('undo').disabled = (this.current == this.oldest);
+      document.getElementById('redo').disabled = (this.current == this.latest);
+    }
+  }
+
+  redo() {
+    if (this.current != this.latest) {
+      this.screen.clearBuffer();
+      this.current = (this.current + 1) % this.size;
+      this.screen.buffer = this.snapshots[this.current].new;
+      this.screen.commitBuffer(false);
+      document.getElementById('undo').disabled = (this.current == this.oldest);
+      document.getElementById('redo').disabled = (this.current == this.latest);
     }
   }
 }

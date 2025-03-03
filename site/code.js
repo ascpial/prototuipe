@@ -373,13 +373,14 @@ let select = {
       // we need to implement all this stuff here in order to improve performance on Chrome
       for (let y = Math.max(0, originY); y < Math.min(originY + height, screen.size.height); y++) {
         for (let x = Math.max(originX, 0); x < Math.min(originX + width, screen.size.width); x++) {
-          screen.screen[y][x] = {
+          screen.buffer[[y, x]] = {
             charId: 32,
             fg: screen.fgColor,
             bg: screen.bgColor,
           }
         }
       }
+      screen.commitBuffer(true, false);
       screen.ctx.fillStyle = screen.colors[screen.bgColor];
       screen.ctx.fillRect(Math.max(originX, 0) * 6 + screen.border, Math.max(originY, 0) * 9 + screen.border,
         Math.min(width, screen.size.width - originX) * 6, Math.min(height, screen.size.height - originY) * 9,
@@ -858,6 +859,14 @@ function undo() {
 }
 document.getElementById("undo").addEventListener('click', undo);
 
+function redo() {
+  screen.interaction = { mode: MODES.Idle };
+  screen.clearBuffer();
+  screen.history.redo();
+  render();
+}
+document.getElementById("redo").addEventListener('click', redo);
+
 const SELECTION_COLOR = DEFAULT_COLORS[COLOR_NAMES.yellow];
 
 let cursor = { shown: true, latestUpdate: null }
@@ -926,8 +935,9 @@ function pointUp(e) {
 function executeKeybinds(e) {
   if (e.ctrlKey && e.key == "z") {
     undo();
-  }
-  if (e.key == "s") {
+  } else if (e.ctrlKey && e.key == "y") {
+    redo();
+  } else if (e.key == "s") {
     setTool(TOOLS.Select);
   } else if (e.key == "t") {
     setTool(TOOLS.Write);
@@ -1129,7 +1139,8 @@ document.getElementById('bimg_export').addEventListener('click', () => {
   let rawData = bimgExport(screen, width, height, x, y);
   console.log(rawData);
   let data = serialize(rawData);
-  downloadFile(data, "image.bimg");
+  let customFilename = document.getElementById("bimg_export_filename").value;
+  downloadFile(data, customFilename ? customFilename: "image.bimg");
   document.getElementById('bimg_dialog').close();
 });
 

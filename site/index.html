@@ -64,6 +64,9 @@
         <md-filled-tonal-icon-button title="Undo" id="undo" disabled>
           <md-icon> undo </md-icon>
         </md-filled-tonal-icon-button>
+        <md-filled-tonal-icon-button title="Redo" id="redo" disabled>
+          <md-icon> redo </md-icon>
+        </md-filled-tonal-icon-button>
         <md-filled-tonal-icon-button id="open_projects" title="Open projects">
           <md-icon> folder_open </md-icon>
         </md-filled-tonal-icon-button>
@@ -420,6 +423,8 @@
   <md-dialog id="bimg_dialog">
     <div slot="headline">BIMG export</div>
     <div slot="content" class="vertical">
+      <md-outlined-text-field label="Filename" value="image.bimg" id="bimg_export_filename" placeholder="image.bimg">
+      </md-outlined-text-field>
       <label style="display: flex; align-items: center;">
         <md-checkbox touch-target="wrapper" id="bimg_select"></md-checkbox>
         Only export selection
