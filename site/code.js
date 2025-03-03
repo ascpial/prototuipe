@@ -763,6 +763,7 @@ function addChars() {
     button.onclick = () => selectChar(charId)
     container.appendChild(button);
   }
+  container.dispatchEvent(new Event('scroll'));
 }
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', addChars)
 
