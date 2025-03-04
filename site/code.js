@@ -606,24 +606,60 @@ function openProject(id) {
 openProject(loadingId);
 
 let prop;
-function make_fit() {
+function setDefaultProp() {
   let pannel = document.getElementById("screen_panel");
 
+  let prop1 = pannel.offsetWidth / canvas.width;
+  let prop2 = pannel.offsetHeight / canvas.height;
+  setProp(Math.min(prop1, prop2));
+}
+function setProp(value) {
+  prop = Math.min(Math.max(value, 0.5), 100);
+  canvas.style.setProperty('--prop', prop + "px");
+}
+function getProp() { return prop; }
+
+let pos_x, pos_y
+function setPos() {
+  canvas.style.setProperty('--pos-x', pos_x);
+  canvas.style.setProperty('--pos-y', pos_y);
+}
+function setDefaultPos() {
+  let baseWidth = screen.size.width * 6 + screen.border * 2;
+  let baseHeight = screen.size.height * 9 + screen.border * 2;
+  pos_x = baseWidth / 2;
+  pos_y = baseHeight / 2;
+  setPos();
+}
+function addPos(x, y) {
+  pos_x += x;
+  pos_y += y;
+  setPos();
+}
+
+function make_fit() {
   let baseWidth = screen.size.width * 6 + screen.border * 2;
   let baseHeight = screen.size.height * 9 + screen.border * 2;
   canvas.style.setProperty('--base-width', baseWidth);
   canvas.style.setProperty('--base-height', baseHeight);
-  canvas.style.setProperty('--pos-x', baseWidth / 2);
-  canvas.style.setProperty('--pos-y', baseHeight / 2);
+  setDefaultPos();
 
-  let prop1 = pannel.offsetWidth / canvas.width;
-  let prop2 = pannel.offsetHeight / canvas.height;
-  prop = Math.min(prop1, prop2);
-  // canvas.style.width = canvas.width * prop + "px";
-  // canvas.style.height = canvas.height * prop + "px";
-  canvas.style.setProperty('--prop', prop + "px");
+  setDefaultProp();
   canvas.style.visibility = "visible";
 }
+
+function zoom(scale) {
+  setProp(getProp() * scale);
+};
+document.getElementById("zoom_in").addEventListener("click", () => { zoom(1.2) });
+document.getElementById("reset_zoom").addEventListener("click", make_fit);
+document.getElementById("zoom_out").addEventListener("click", () => { zoom(1 / 1.2) });
+window.addEventListener("auxclick", (e) => { e.preventDefault(); });
+document.getElementById("screen_panel").addEventListener("pointermove", (e) => {
+  if (e.buttons == 2) {
+    addPos(-e.movementX / prop, -e.movementY / prop);
+  }
+});
 
 window.onload = () => {
   updatePills();
@@ -946,6 +982,8 @@ function executeKeybinds(e) {
     setTool(TOOLS.Place);
   } else if (e.key == "d") {
     setTool(TOOLS.Draw);
+  } else if (e.key == "a") {
+    make_fit();
   }
 }
 
@@ -964,6 +1002,15 @@ canvas.addEventListener("pointermove", pointMove);
 canvas.addEventListener("pointerdown", pointDown);
 canvas.addEventListener("pointerup", pointUp);
 document.addEventListener("keydown", keyDown);
+document.getElementById('screen_panel').addEventListener("wheel", (e) => {
+  if (e.ctrlKey) {
+    e.preventDefault();
+    setProp(getProp() * (1 - e.deltaY / 100));
+  } else {
+    e.preventDefault();
+    addPos(e.deltaX / 5, e.deltaY / 5);
+  }
+});
 
 canvas.addEventListener('touchstart', function(e) { e.preventDefault() }, false);
 canvas.addEventListener('touchmove', function(e) { e.preventDefault() }, false);
@@ -1000,7 +1047,7 @@ canvas.addEventListener("mousedown", (e) => {
     }
   }
 });
-canvas.addEventListener("contextmenu", (event) => {
+document.getElementById('screen_panel').addEventListener("contextmenu", (event) => {
   event.preventDefault();
 })
 window.addEventListener("copy", (e) => {
@@ -1099,14 +1146,6 @@ document.getElementById("size_select").addEventListener('closed', (select) => {
   select.target.childNodes.forEach((item) => { if (item.selected) { selectSizeType(item.value) } });
 });
 
-// document.getElementById('initiate_code_export').addEventListener('click', () => {
-//   document.getElementById('code_select').disabled = !(tool == TOOLS.Select && screen.interaction.mode == MODES.Selected);
-//   if (!(tool == TOOLS.Select && screen.interaction.mode == MODES.Selected)) {
-//     document.getElementById('code_select').checked = false;
-//   }
-//   document.getElementById('properties').close();
-//   document.getElementById('code_dialog').show();
-// });
 document.getElementById('initiate_bimg_export').addEventListener('click', () => {
   document.getElementById('bimg_select').disabled = !(tool == TOOLS.Select && screen.interaction.mode == MODES.Selected);
   if (!(tool == TOOLS.Select && screen.interaction.mode == MODES.Selected)) {
@@ -1152,7 +1191,7 @@ document.getElementById('bimg_export').addEventListener('click', () => {
   console.log(rawData);
   let data = serialize(rawData);
   let customFilename = document.getElementById("bimg_export_filename").value;
-  downloadFile(data, customFilename ? customFilename: "image.bimg");
+  downloadFile(data, customFilename ? customFilename : "image.bimg");
   document.getElementById('bimg_dialog').close();
 });
 

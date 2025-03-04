@@ -93,6 +93,7 @@ body {
   /* align-items: center; */
   /* justify-content: center; */
   overflow: hidden;
+  touch-action: none;
 }
 
 #screen_panel canvas {
@@ -102,7 +103,6 @@ body {
   left: calc(50% - var(--prop) * var(--pos-x));
   top: calc(50% - var(--prop) * var(--pos-y));
   width: calc(var(--prop) * var(--base-width));
-  touch-action: none;
 }
 
 .floating_bl {
@@ -146,14 +146,14 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  --md-elevation-level: 0;
+  /* --md-elevation-level: 0; */
   opacity: 0.5;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
 }
 
 .zoom_controls:hover {
-  --md-elevation-level: 1;
+  /* --md-elevation-level: 1; */
   opacity: 1;
 }
 

@@ -29,11 +29,11 @@
 <body>
   <div id="screen_panel">
     <canvas id="screen" style="visibility: hidden"></canvas>
-    <div class="floating_bl" style="display: none;">
+    <div class="floating_bl">
       <div class="zoom_controls">
-        <md-elevation></md-elevation>
-        <md-icon-button><md-icon>zoom_in</md-icon></md-icon-button>
-        <md-icon-button><md-icon>zoom_out</md-icon></md-icon-button>
+        <md-icon-button id="zoom_in"><md-icon>zoom_in</md-icon></md-icon-button>
+        <md-icon-button id="reset_zoom"><md-icon>crop_free</md-icon></md-icon-button>
+        <md-icon-button id="zoom_out"><md-icon>zoom_out</md-icon></md-icon-button>
       </div>
     </div>
     <div id="scrim">
@@ -42,7 +42,6 @@
       </div>
     </div>
   </div>
-  <!-- <canvas id="cache"></canvas> -->
 
   <div id="tools_panel">
     <div class="row">
@@ -434,30 +433,6 @@
     </div>
     <div slot="actions">
       <md-text-button onclick="document.getElementById('projects_dialog').close()">Close</md-text-button>
-    </div>
-  </md-dialog>
-
-  <md-dialog id="code_dialog">
-    <div slot="headline">Code export</div>
-    <div slot="content" class="vertical">
-      <label class="md-typescale-title-medium" style="margin-bottom: 12px;"> Offset </label>
-      <div class="horizontal">
-        <md-outlined-text-field value="0" id="code_offset_x">
-        </md-outlined-text-field>
-        <md-outlined-text-field value="0" style="padding-left: 8px;" id="code_offset_y">
-        </md-outlined-text-field>
-      </div>
-      <div class="hint" style="margin-top: 8px;">
-        <md-icon style="padding: 8px;">lightbulb</md-icon>
-        <p>You can use anything for offset, including variables.</p>
-      </div>
-      <label style="display: flex; align-items: center; padding-top: 8px;">
-        <md-checkbox touch-target="wrapper" id="code_select"></md-checkbox>
-        Only export selection
-      </label>
-    </div>
-    <div slot="actions">
-      <md-text-button id="code_export">Export</md-text-button>
     </div>
   </md-dialog>
 
