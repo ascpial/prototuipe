@@ -139,7 +139,7 @@ body {
 }
 
 .zoom_controls {
-  padding: 2px;
+  padding: 3px;
   background-color: var(--md-sys-color-surface-container);
   color: var(--md-sys-color-on-surface-container);
   border-radius: 22px;
