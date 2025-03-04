@@ -1005,19 +1005,25 @@ document.addEventListener("keydown", keyDown);
 document.getElementById('screen_panel').addEventListener("wheel", (e) => {
   if (e.ctrlKey) {
     e.preventDefault();
-    setProp(getProp() * (1 - e.deltaY / 100));
+    setProp(getProp() * (1 - e.deltaY / 500));
   } else {
     e.preventDefault();
-    addPos(e.deltaX / 5, e.deltaY / 5);
+    if (e.shiftKey) {
+      addPos(e.deltaY / 5, e.deltaX / 5);
+    } else {
+      addPos(e.deltaX / 5, e.deltaY / 5);
+    }
   }
+  pointMove(e);
 });
 
 canvas.addEventListener('touchstart', function(e) { e.preventDefault() }, false);
 canvas.addEventListener('touchmove', function(e) { e.preventDefault() }, false);
 
-canvas.addEventListener("pointerleave", (event) => {
-  if (interaction.mode == MODES.Idle) {
-    interaction = { mode: 0 }; render();
+canvas.addEventListener("pointerout", (event) => {
+  if (screen.interaction.mode == MODES.Idle) {
+    screen.interaction = { mode: MODES.Idle };
+    render();
   }
 });
 canvas.addEventListener("mousedown", (e) => {
@@ -1202,7 +1208,6 @@ function openProperties() {
   document.getElementById("project_name").value = screen.name;
   document.getElementById("draw_border").checked = screen.drawBorder;
   let properties = document.getElementById("properties");
-  properties.shadowRoot.querySelector('.scroller').scrollTo(0, 0)
   // document.getElementById("font_preview").src = FONT.src;
   properties.show();
 }
