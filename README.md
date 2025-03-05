@@ -8,7 +8,7 @@ The following tools are available:
 
 - Place (n): allows you to place letters and symbols, selected in the right panel. You can drag to draw multiple symbols at once.
   You can also press shift before starting to drag and draw lines.
-  Similarely, you can press ctrl to draw boxes.
+  Similarly, you can press ctrl to draw boxes.
 - Text (t): allows you to input text directly from you keyboard.
   Press enter to write the text on the screen, shift enter to add a newline.
 - Select (s): allows you to move parts of the display, delete areas and copy-paste.
