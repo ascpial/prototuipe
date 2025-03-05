@@ -1009,9 +1009,9 @@ document.getElementById('screen_panel').addEventListener("wheel", (e) => {
   } else {
     e.preventDefault();
     if (e.shiftKey) {
-      addPos(e.deltaY / 5, e.deltaX / 5);
+      addPos(e.deltaY / getProp(), e.deltaX / getProp());
     } else {
-      addPos(e.deltaX / 5, e.deltaY / 5);
+      addPos(e.deltaX / getProp(), e.deltaY / getProp());
     }
   }
   pointMove(e);
