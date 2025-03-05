@@ -63,7 +63,7 @@ body {
 }
 
 #tools_panel {
-  flex-basis: 370px;
+  flex-basis: 350px;
   flex-grow: 0;
   flex-shrink: 0;
   background-color: var(--md-sys-color-surface);
@@ -72,7 +72,20 @@ body {
   display: flex;
   flex-direction: column;
   z-index: 1;
+  --pills-width: 260px;
 }
+
+.tools {
+  background-color: var(--md-sys-color-secondary-container);
+  border-radius: 22px;
+  display: inline-block;
+  overflow: hidden;
+  font-size: 0;
+}
+
+/* .tools md-filled-tonal-icon-button { */
+/*   --md-filled-tonal-icon-button-container-shape: 0px; */
+/* } */
 
 @media only screen and (max-width: 600px) {
   body {
@@ -194,7 +207,7 @@ table.colors md-filled-icon-button {
   --md-filled-icon-button-container-shape: 0px;
   --md-filled-icon-button-container-width: calc(var(--pills-width) / 8);
   --md-filled-icon-button-container-height: calc(var(--pills-width) / 8);
-  --md-filled-icon-button-icon-size: calc( var(--pills-width) / 12 );
+  --md-filled-icon-button-icon-size: calc(var(--pills-width) / 12);
 }
 
 .chars {

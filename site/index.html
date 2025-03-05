@@ -41,21 +41,23 @@
     </div>
   </div>
 
-  <div id="tools_panel" style="--pills-width: 280px;">
+  <div id="tools_panel">
     <div class="row">
       <div class="left">
-        <md-filled-tonal-icon-button id="tool_place" class="selected-tool" title="Place characters (n)">
-          <md-icon> draw </md-icon>
-        </md-filled-tonal-icon-button>
-        <md-filled-tonal-icon-button id="tool_input_text" title="Input text (t)">
-          <md-icon> text_fields </md-icon>
-        </md-filled-tonal-icon-button>
-        <md-filled-tonal-icon-button id="tool_select" title="Select (s)">
-          <md-icon> arrow_selector_tool </md-icon>
-        </md-filled-tonal-icon-button>
-        <md-filled-tonal-icon-button id="tool_draw" title="Draw (d)">
-          <md-icon> brush </md-icon>
-        </md-filled-tonal-icon-button>
+        <div class="tools">
+          <md-filled-tonal-icon-button id="tool_place" class="selected-tool" title="Place characters (n)">
+            <md-icon>draw</md-icon>
+          </md-filled-tonal-icon-button>
+          <md-filled-tonal-icon-button id="tool_input_text" title="Input text (t)">
+            <md-icon>text_fields</md-icon>
+          </md-filled-tonal-icon-button>
+          <md-filled-tonal-icon-button id="tool_select" title="Select (s)">
+            <md-icon>arrow_selector_tool</md-icon>
+          </md-filled-tonal-icon-button>
+          <md-filled-tonal-icon-button id="tool_draw" title="Draw (d)">
+            <md-icon>brush</md-icon>
+          </md-filled-tonal-icon-button>
+        </div>
       </div>
       <div class="right">
         <md-filled-tonal-icon-button title="Undo" id="undo" disabled>
@@ -137,9 +139,9 @@
         <tr>
           <td><md-filled-icon-button id="bg0" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-            <td><md-filled-icon-button id="bg1" touch-target="none"><md-icon
+          <td><md-filled-icon-button id="bg1" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-            <td><md-filled-icon-button id="bg2" touch-target="none"><md-icon
+          <td><md-filled-icon-button id="bg2" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
           <td><md-filled-icon-button id="bg3" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
