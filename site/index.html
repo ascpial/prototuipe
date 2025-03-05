@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  <div id="tools_panel">
+  <div id="tools_panel" style="--pills-width: 280px;">
     <div class="row">
       <div class="left">
         <md-filled-tonal-icon-button id="tool_place" class="selected-tool" title="Place characters (n)">
@@ -73,8 +73,7 @@
       </div>
     </div>
     <div class="color-picker row">
-      <div class="left">
-        <!-- <md-icon-button id="fg_button"> -->
+      <div class="left" style="padding-right: 10px;">
         <md-icon style="color: var(--md-sys-color-on-surface)">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
             <path style="fill: var(--foreground-color)"
@@ -85,47 +84,47 @@
         </md-icon>
         <!-- </md-icon-button> -->
       </div>
-      <table class="colors" class="right" style="--pills-width: 320px;">
+      <table class="colors" class="right">
         <tr>
-          <td><md-filled-icon-button id="fg0"><md-icon>check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg1"><md-icon
+          <td><md-filled-icon-button id="fg0" touch-target="none"><md-icon>check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="fg1" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg2"><md-icon
+          <td><md-filled-icon-button id="fg2" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg3"><md-icon
+          <td><md-filled-icon-button id="fg3" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg4"><md-icon
+          <td><md-filled-icon-button id="fg4" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg5"><md-icon
+          <td><md-filled-icon-button id="fg5" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg6"><md-icon
+          <td><md-filled-icon-button id="fg6" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg7"><md-icon
+          <td><md-filled-icon-button id="fg7" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
         </tr>
         <tr>
-          <td><md-filled-icon-button id="fg8"><md-icon
+          <td><md-filled-icon-button id="fg8" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg9"><md-icon
+          <td><md-filled-icon-button id="fg9" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg10"><md-icon
+          <td><md-filled-icon-button id="fg10" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg11"><md-icon
+          <td><md-filled-icon-button id="fg11" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg12"><md-icon
+          <td><md-filled-icon-button id="fg12" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg13"><md-icon
+          <td><md-filled-icon-button id="fg13" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg14"><md-icon
+          <td><md-filled-icon-button id="fg14" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="fg15"><md-icon style="visibility: hidden;">check</md-icon>
+          <td><md-filled-icon-button id="fg15" touch-target="none"><md-icon style="visibility: hidden;">check</md-icon>
             </md-filled-icon-button>
           </td>
         </tr>
       </table>
     </div>
     <div class="color-picker row">
-      <div class="left">
+      <div class="left" style="padding-right: 10px;">
         <md-icon style="color: var(--md-sys-color-on-surface)" id="bg_icon">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
             <path style="fill: var(--background-color)" d="M 80,0 V -160 H 880 V 0 Z" />
@@ -134,41 +133,41 @@
           </svg>
         </md-icon>
       </div>
-      <table class="colors" class="right" style="--pills-width: 320px;">
+      <table class="colors" style="right">
         <tr>
-          <td><md-filled-icon-button id="bg0"><md-icon
+          <td><md-filled-icon-button id="bg0" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg1"><md-icon
+            <td><md-filled-icon-button id="bg1" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg2"><md-icon
+            <td><md-filled-icon-button id="bg2" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg3"><md-icon
+          <td><md-filled-icon-button id="bg3" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg4"><md-icon
+          <td><md-filled-icon-button id="bg4" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg5"><md-icon
+          <td><md-filled-icon-button id="bg5" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg6"><md-icon
+          <td><md-filled-icon-button id="bg6" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg7"><md-icon
+          <td><md-filled-icon-button id="bg7" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
         </tr>
         <tr>
-          <td><md-filled-icon-button id="bg8"><md-icon
+          <td><md-filled-icon-button id="bg8" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg9"><md-icon
+          <td><md-filled-icon-button id="bg9" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg10"><md-icon
+          <td><md-filled-icon-button id="bg10" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg11"><md-icon
+          <td><md-filled-icon-button id="bg11" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg12"><md-icon
+          <td><md-filled-icon-button id="bg12" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg13"><md-icon
+          <td><md-filled-icon-button id="bg13" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg14"><md-icon
+          <td><md-filled-icon-button id="bg14" touch-target="none"><md-icon
                 style="visibility: hidden;">check</md-icon></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="bg15"><md-icon>check</md-icon></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="bg15" touch-target="none"><md-icon>check</md-icon></md-filled-icon-button></td>
         </tr>
       </table>
     </div>
@@ -371,24 +370,24 @@
 
       <table class="colors" class="right" style="--pills-width: 366px;">
         <tr>
-          <td><md-filled-icon-button id="p0" type="color"></td>
-          <td><md-filled-icon-button id="p1"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p2"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p3"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p4"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p5"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p6"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p7"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p0" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p1" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p2" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p3" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p4" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p5" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p6" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p7" touch-target="none"></md-filled-icon-button></td>
         </tr>
         <tr>
-          <td><md-filled-icon-button id="p8"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p9"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p10"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p11"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p12"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p13"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p14"></md-filled-icon-button></td>
-          <td><md-filled-icon-button id="p15"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p8" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p9" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p10" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p11" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p12" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p13" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p14" touch-target="none"></md-filled-icon-button></td>
+          <td><md-filled-icon-button id="p15" touch-target="none"></md-filled-icon-button></td>
         </tr>
       </table>
       <div class="row" style="margin-top: 8px;">

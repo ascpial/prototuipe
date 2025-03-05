@@ -50,7 +50,6 @@
   --md-ref-typeface-brand: 'sans-serif';
   --md-ref-typeface-plain: 'sans-serif';
   --md-icon-font: 'Material Symbols Outlined';
-  --pill-size: 40px;
 }
 
 body {
@@ -64,7 +63,7 @@ body {
 }
 
 #tools_panel {
-  flex-basis: 300pt;
+  flex-basis: 370px;
   flex-grow: 0;
   flex-shrink: 0;
   background-color: var(--md-sys-color-surface);
@@ -118,6 +117,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 #scrim {
   display: none;
   position: absolute;
@@ -178,21 +178,12 @@ body {
   justify-content: center;
 }
 
-table.colors md-icon-button {
-  width: 50px;
-  height: 50px;
-}
-
 table.colors {
   border: none;
   border-collapse: collapse;
   border-radius: calc(var(--pills-width) * 0.3 / 8);
   overflow: hidden;
   width: var(--pills-width);
-}
-
-table.colors tr {
-  height: calc(var(--pills-width) / 8);
 }
 
 table.colors td {
@@ -203,7 +194,7 @@ table.colors md-filled-icon-button {
   --md-filled-icon-button-container-shape: 0px;
   --md-filled-icon-button-container-width: calc(var(--pills-width) / 8);
   --md-filled-icon-button-container-height: calc(var(--pills-width) / 8);
-  --md-filled-icon-button-leading-space: 0px;
+  --md-filled-icon-button-icon-size: calc( var(--pills-width) / 12 );
 }
 
 .chars {
@@ -258,6 +249,7 @@ img.char {
 .font_preview_area {
   position: relative;
 }
+
 .font_buttons {
   position: absolute;
   top: 0px;
