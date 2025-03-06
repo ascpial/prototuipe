@@ -929,25 +929,25 @@ function render() {
     canvas.style.cursor = "";
   }
 
-  if ((screen.interaction.mode == MODES.Selected || screen.interaction.mode == MODES.MovingSelection)) {
+  if ((screen.interaction.mode == MODES.Selected || screen.interaction.mode == MODES.MovingSelection || screen.interaction.mode == MODES.Selecting)) {
     let [originX, originY, width, height] = select.getBoundingBox();
     if (width == 1 || height == 1) {
       let char = screen.get(originX, originY);
       if (char) {
         setLabel(
-          originX.toString() + ", " + originY.toString()
+          (originX + 1).toString() + ", " + (originY + 1).toString()
           + "(\\x" + ("0" + char.charId.toString(16)).slice(-2).toUpperCase() + ", \\" + ("00" + char.charId.toString()).slice(-3) + ")");
       } else {
         showLabel(false);
       }
     } else {
-      setLabel(originX.toString() + ", " + originY.toString() + " (" + width.toString() + " &times; " + height.toString() + ")");
+      setLabel((originX + 1).toString() + ", " + (originY + 1).toString() + " (" + width.toString() + " &times; " + height.toString() + ")");
     }
   } else if (screen.interaction.subpos && screen.interaction.pos) {
     let [spx, spy] = [screen.interaction.subpos.x % 2, screen.interaction.subpos.y % 3];
-    setLabel(screen.interaction.pos.x.toString() + ", " + screen.interaction.pos.y.toString() + " (" + spx.toString() + ", " + spy.toString() + ")");
+    setLabel((screen.interaction.pos.x + 1).toString() + ", " + (screen.interaction.pos.y + 1).toString() + " (" + spx.toString() + ", " + spy.toString() + ")");
   } else if (screen.interaction.pos) {
-    setLabel(screen.interaction.pos.x.toString() + ", " + screen.interaction.pos.y.toString());
+    setLabel((screen.interaction.pos.x + 1).toString() + ", " + (screen.interaction.pos.y + 1).toString());
   } else {
     showLabel(false);
   }
