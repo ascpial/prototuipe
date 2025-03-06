@@ -160,26 +160,26 @@ body {
 .zoom_controls {
   padding: 3px;
   background-color: var(--md-sys-color-surface-container);
-  color: var(--md-sys-color-on-surface-container);
+  color: var(--md-sys-color-on-surface);
   border-radius: 22px;
   position: relative;
   display: flex;
   flex-direction: column;
-  opacity: 0.5;
-  transition-duration: 250ms;
-  transition-timing-function: ease-in-out;
+  /* opacity: 0.5; */
+  /* transition-duration: 250ms; */
+  /* transition-timing-function: ease-in-out; */
 }
 
-.zoom_controls:hover {
-  opacity: 1;
-}
+/* .zoom_controls:hover { */
+/*   opacity: 1; */
+/* } */
 
 #infos {
-  visibility: none;
+  visibility: hidden;
   height: 20px;
   padding: 8px 12px;
   background-color: var(--md-sys-color-surface-container);
-  color: var(--md-sys-color-on-surface-container);
+  color: var(--md-sys-color-on-surface);
   border-radius: 23px;
   position: relative;
 }
