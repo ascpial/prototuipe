@@ -175,6 +175,7 @@ body {
 }
 
 #infos {
+  visibility: none;
   height: 20px;
   padding: 8px 12px;
   background-color: var(--md-sys-color-surface-container);
