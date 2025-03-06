@@ -936,7 +936,7 @@ function render() {
       if (char) {
         setLabel(
           (originX + 1).toString() + ", " + (originY + 1).toString()
-          + "(\\x" + ("0" + char.charId.toString(16)).slice(-2).toUpperCase() + ", \\" + ("00" + char.charId.toString()).slice(-3) + ")");
+          + " (\\x" + ("0" + char.charId.toString(16)).slice(-2).toUpperCase() + ", \\" + ("00" + char.charId.toString()).slice(-3) + ")");
       } else {
         showLabel(false);
       }
