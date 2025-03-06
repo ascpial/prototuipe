@@ -71,7 +71,7 @@ body {
   height: calc(100vh - 20px);
   display: flex;
   flex-direction: column;
-  z-index: 1;
+  z-index: 10;
   --pills-width: 260px;
 }
 
@@ -110,11 +110,11 @@ body {
 
 #screen_panel canvas {
   image-rendering: pixelated;
-  --prop: 1px;
   position: absolute;
   left: calc(50% - var(--prop) * var(--pos-x));
   top: calc(50% - var(--prop) * var(--pos-y));
   width: calc(var(--prop) * var(--base-width));
+  z-index: 1;
 }
 
 .floating_bl {
@@ -235,7 +235,7 @@ table.colors md-filled-icon-button {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  z-index: 3;
+  z-index: 11;
 }
 
 img.char {
@@ -318,7 +318,7 @@ md-filled-select.small::part(menu) {
 }
 
 md-dialog {
-  z-index: 2;
+  z-index: 99;
 }
 
 .project_cards {

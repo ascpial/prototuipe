@@ -606,23 +606,23 @@ function openProject(id) {
 openProject(loadingId);
 
 let prop;
-function setDefaultProp() {
-  let pannel = document.getElementById("screen_panel");
+let screen_pannel = document.getElementById("screen_panel");
 
-  let prop1 = pannel.offsetWidth / canvas.width;
-  let prop2 = pannel.offsetHeight / canvas.height;
+function setDefaultProp() {
+  let prop1 = screen_pannel.offsetWidth / canvas.width;
+  let prop2 = screen_pannel.offsetHeight / canvas.height;
   setProp(Math.min(prop1, prop2));
 }
 function setProp(value) {
   prop = Math.min(Math.max(value, 0.5), 100);
-  canvas.style.setProperty('--prop', prop + "px");
+  screen_pannel.style.setProperty('--prop', prop + "px");
 }
 function getProp() { return prop; }
 
 let pos_x, pos_y
 function setPos() {
-  canvas.style.setProperty('--pos-x', pos_x);
-  canvas.style.setProperty('--pos-y', pos_y);
+  screen_pannel.style.setProperty('--pos-x', pos_x);
+  screen_pannel.style.setProperty('--pos-y', pos_y);
 }
 function setDefaultPos() {
   let baseWidth = screen.size.width * 6 + screen.border * 2;
@@ -641,7 +641,7 @@ function make_fit() {
   let baseWidth = screen.size.width * 6 + screen.border * 2;
   let baseHeight = screen.size.height * 9 + screen.border * 2;
   canvas.style.setProperty('--base-width', baseWidth);
-  canvas.style.setProperty('--base-height', baseHeight);
+  // canvas.style.setProperty('--base-height', baseHeight);
   setDefaultPos();
 
   setDefaultProp();
@@ -792,6 +792,7 @@ function addChars() {
     charScreen.ctx.clearRect(0, 0, charScreen.canvas.width, charScreen.canvas.height);
     charScreen.drawChar(charId, 0, 0);
     let button = document.createElement('md-icon-button');
+    button.title = "\\x" + ("0" + charId.toString(16)).slice(-2).toUpperCase() + ", \\" + ("00" + charId.toString()).slice(-3);
     let img = new Image();
     img.src = charScreen.canvas.toDataURL();
     img.classList.add("char")
