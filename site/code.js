@@ -254,17 +254,21 @@ let input_text = {
 }
 
 let select = {
-  inBoundingBox(screen) {
+  inBoundingBox() {
     if (!screen.interaction.point1 || !screen.interaction.point2 || !screen.interaction.pos) {
       return false;
     } else {
-      let width = Math.abs(screen.interaction.point1.x - screen.interaction.point2.x) + 1;
-      let height = Math.abs(screen.interaction.point1.y - screen.interaction.point2.y) + 1;
-      let originX = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
-      let originY = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
+      let [originX, originY, width, height] = select.getBoundingBox();
       return (screen.interaction.pos.x >= originX && screen.interaction.pos.x < originX + width
         && screen.interaction.pos.y >= originY && screen.interaction.pos.y < originY + height);
     }
+  },
+  getBoundingBox() {
+    let width = Math.abs(screen.interaction.point1.x - screen.interaction.point2.x) + 1;
+    let height = Math.abs(screen.interaction.point1.y - screen.interaction.point2.y) + 1;
+    let originX = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
+    let originY = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
+    return [originX, originY, width, height];
   },
   pointDown: (screen, e) => {
     let pos = getCharCoords(e);
@@ -276,13 +280,9 @@ let select = {
           point2: pos,
         };
       } else if (screen.interaction.mode == MODES.Selected) {
-        let width = Math.abs(screen.interaction.point1.x - screen.interaction.point2.x) + 1;
-        let height = Math.abs(screen.interaction.point1.y - screen.interaction.point2.y) + 1;
-        let originX = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
-        let originY = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
+        let [originX, originY, width, height] = select.getBoundingBox();
 
-        if (pos.x >= originX && pos.x < originX + width
-          && pos.y >= originY && pos.y < originY + height) {
+        if (select.inBoundingBox()) {
           screen.interaction.mode = MODES.MovingSelection;
           screen.interaction.pos = pos;
           if (!screen.interaction.offset) {
@@ -318,6 +318,7 @@ let select = {
           commitInteraction();
           screen.interaction = {
             mode: MODES.Idle,
+            pos: pos,
           };
           render();
         }
@@ -366,10 +367,7 @@ let select = {
     } else if (e.key == "Delete" || e.key == "Backspace") {
       e.preventDefault();
       commitInteraction();
-      let width = Math.abs(screen.interaction.point1.x - screen.interaction.point2.x) + 1;
-      let height = Math.abs(screen.interaction.point1.y - screen.interaction.point2.y) + 1;
-      let originX = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
-      let originY = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
+      let [originX, originY, width, height] = select.getBoundingBox();
       // we need to implement all this stuff here in order to improve performance on Chrome
       for (let y = Math.max(0, originY); y < Math.min(originY + height, screen.size.height); y++) {
         for (let x = Math.max(originX, 0); x < Math.min(originX + width, screen.size.width); x++) {
@@ -425,11 +423,7 @@ let select = {
   },
   commit: (screen) => {
     if ((screen.interaction.mode == MODES.Selected || screen.interaction.mode == MODES.MovingSelection) && screen.interaction.data) {
-      let minX = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
-      let minY = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
-      let width = Math.abs(screen.interaction.point1.x - screen.interaction.point2.x) + 1;
-      let height = Math.abs(screen.interaction.point1.y - screen.interaction.point2.y) + 1;
-
+      let [minX, minY, width, height] = select.getBoundingBox();
       if (screen.interaction.data) {
         for (let i = 0; i < height; i++) {
           for (let j = 0; j < width; j++) {
@@ -909,11 +903,23 @@ const SELECTION_COLOR = DEFAULT_COLORS[COLOR_NAMES.yellow];
 
 let cursor = { shown: true, latestUpdate: null }
 
+let info_div = document.getElementById('infos');
+
+function showLabel(visible = true) {
+  info_div.style.visibility = visible ? "visible" : "hidden";
+}
+
+function setLabel(value) {
+  info_div.innerHTML = value;
+  showLabel(true);
+}
+
 function render() {
+  console.log(screen.interaction.mode);
   // This section could be moved in the tools render functions, but it's simpler this way for now at least
   if (tool == TOOLS.Select && (screen.interaction.mode == MODES.Idle || screen.interaction.mode == MODES.Selecting)) {
     canvas.style.cursor = "crosshair";
-  } else if (tool == TOOLS.Select && screen.interaction.mode == MODES.Selected && select.inBoundingBox(screen)) {
+  } else if (tool == TOOLS.Select && screen.interaction.mode == MODES.Selected && select.inBoundingBox()) {
     canvas.style.cursor = "grab";
   } else if (screen.interaction.mode == MODES.MovingSelection) {
     canvas.style.cursor = "grabbing";
@@ -921,6 +927,29 @@ function render() {
     canvas.style.cursor = "text";
   } else {
     canvas.style.cursor = "";
+  }
+
+  if ((screen.interaction.mode == MODES.Selected || screen.interaction.mode == MODES.MovingSelection)) {
+    let [originX, originY, width, height] = select.getBoundingBox();
+    if (width == 1 || height == 1) {
+      let char = screen.get(originX, originY);
+      if (char) {
+        setLabel(
+          originX.toString() + ", " + originY.toString()
+          + "(\\x" + ("0" + char.charId.toString(16)).slice(-2).toUpperCase() + ", \\" + ("00" + char.charId.toString()).slice(-3) + ")");
+      } else {
+        showLabel(false);
+      }
+    } else {
+      setLabel(originX.toString() + ", " + originY.toString() + " (" + width.toString() + " &times; " + height.toString() + ")");
+    }
+  } else if (screen.interaction.subpos && screen.interaction.pos) {
+    let [spx, spy] = [screen.interaction.subpos.x % 2, screen.interaction.subpos.y % 3];
+    setLabel(screen.interaction.pos.x.toString() + ", " + screen.interaction.pos.y.toString() + " (" + spx.toString() + ", " + spy.toString() + ")");
+  } else if (screen.interaction.pos) {
+    setLabel(screen.interaction.pos.x.toString() + ", " + screen.interaction.pos.y.toString());
+  } else {
+    showLabel(false);
   }
 
   ctx.drawImage(screen.canvas, 0, 0, canvas.width, canvas.height);
@@ -1060,10 +1089,7 @@ document.getElementById('screen_panel').addEventListener("contextmenu", (event) 
 window.addEventListener("copy", (e) => {
   if (tool == TOOLS.Select && screen.interaction.mode == MODES.Selected) {
     e.preventDefault();
-    let width = Math.abs(screen.interaction.point1.x - screen.interaction.point2.x) + 1;
-    let height = Math.abs(screen.interaction.point1.y - screen.interaction.point2.y) + 1;
-    let originX = Math.min(screen.interaction.point1.x, screen.interaction.point2.x) + (screen.interaction.offset ? screen.interaction.offset.x : 0);
-    let originY = Math.min(screen.interaction.point1.y, screen.interaction.point2.y) + (screen.interaction.offset ? screen.interaction.offset.y : 0);
+    let [originX, originY, width, height] = select.getBoundingBox();
     let img = bimgExport(screen, width, height, originX, originY);
     e.clipboardData.setData('text/plain', JSON.stringify(img));
   }

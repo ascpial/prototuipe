@@ -114,13 +114,19 @@ body {
   left: calc(50% - var(--prop) * var(--pos-x));
   top: calc(50% - var(--prop) * var(--pos-y));
   width: calc(var(--prop) * var(--base-width));
-  z-index: 1;
 }
 
 .floating_bl {
   position: absolute;
   bottom: 0px;
   left: 0px;
+  margin: 10px;
+}
+
+.floating_br {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
   margin: 10px;
 }
 
@@ -159,18 +165,23 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  /* --md-elevation-level: 0; */
   opacity: 0.5;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
 }
 
 .zoom_controls:hover {
-  /* --md-elevation-level: 1; */
   opacity: 1;
 }
 
-
+#infos {
+  height: 20px;
+  padding: 8px 12px;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-container);
+  border-radius: 23px;
+  position: relative;
+}
 
 .selected-tool {
   --md-filled-tonal-icon-button-container-color: var(--md-sys-color-primary);
