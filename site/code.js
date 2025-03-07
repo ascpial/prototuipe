@@ -78,20 +78,24 @@ export const TOOLS = {
 }
 
 function getRelativeCoords(event) {
-  return { x: ~~(event.offsetX / prop), y: ~~(event.offsetY / prop) };
+  let rect = canvas.getBoundingClientRect();
+  return {
+    x: ~~((event.clientX - rect.left) / prop),
+    y: ~~((event.clientY - rect.top) / prop)
+  };
 }
 function getCharCoords(event) {
   let pos = getRelativeCoords(event);
   return {
-    x: ~~((pos.x - 1) / 6),
-    y: ~~((pos.y - 1) / 9),
+    x: Math.min(Math.max(~~((pos.x - screen.border) / 6), 0), screen.size.width - 1),
+    y: Math.min(Math.max(~~((pos.y - screen.border) / 9), 0), screen.size.height - 1),
   }
 }
 function getSubPxCoords(event) {
   let pos = getRelativeCoords(event);
   return {
-    x: ~~((pos.x - 1) / 3),
-    y: ~~((pos.y - 1) / 3),
+    x: ~~((pos.x - screen.border) / 3),
+    y: ~~((pos.y - screen.border) / 3),
   }
 }
 
@@ -585,7 +589,7 @@ function openProject(id) {
   screen.selectedChar = 1;
   canvas.width = screen.canvas.width;
   canvas.height = screen.canvas.height;
-  bufferScreen = new ScreenRenderer(size, screen.colors, canvas, 2);
+  bufferScreen = new ScreenRenderer(screen.size, screen.colors, canvas, 2);
 
   window.localStorage.setItem("lastOpened", id);
   if (!projects.includes(id)) {
@@ -915,7 +919,6 @@ function setLabel(value) {
 }
 
 function render() {
-  console.log(screen.interaction.mode);
   // This section could be moved in the tools render functions, but it's simpler this way for now at least
   if (tool == TOOLS.Select && (screen.interaction.mode == MODES.Idle || screen.interaction.mode == MODES.Selecting)) {
     canvas.style.cursor = "crosshair";
@@ -929,7 +932,7 @@ function render() {
     canvas.style.cursor = "";
   }
 
-  if ((screen.interaction.mode == MODES.Selected || screen.interaction.mode == MODES.MovingSelection || screen.interaction.mode == MODES.Selecting)) {
+  if ((screen.interaction.mode == MODES.Selected || screen.interaction.mode == MODES.MovingSelection || screen.interaction.mode == MODES.Selecting)) {
     let [originX, originY, width, height] = select.getBoundingBox();
     if (width == 1 || height == 1) {
       let char = screen.get(originX, originY);
@@ -1030,7 +1033,7 @@ function keyDown(e) {
 
 canvas.addEventListener("pointermove", pointMove);
 canvas.addEventListener("pointerdown", pointDown);
-canvas.addEventListener("pointerup", pointUp);
+document.addEventListener("pointerup", pointUp);
 document.addEventListener("keydown", keyDown);
 document.getElementById('screen_panel').addEventListener("wheel", (e) => {
   if (e.ctrlKey) {
