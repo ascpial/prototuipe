@@ -126,6 +126,13 @@ let place = {
           screen.drawChar(screen.selectedChar, screen.interaction.pos.x, screen.interaction.pos.y, screen.fgColor, screen.bgColor);
         }
       }
+    } else if (e.button == 1) {
+      console.log("copy element");
+      let char = screen.get(pos.x, pos.y);
+      selectChar(char.charId);
+      setFgColor(char.fg);
+      setBgColor(char.bg);
+      render();
     }
   },
   pointMove: (screen, e) => {
@@ -698,6 +705,20 @@ function updateCSSColor() {
   document.documentElement.style.setProperty('--background-color', screen.colors[screen.bgColor]);
 }
 
+function setFgColor(color) {
+  document.getElementById('fg' + screen.fgColor).firstChild.style.setProperty('visibility', 'hidden');
+  screen.fgColor = color;
+  document.getElementById('fg' + screen.fgColor).firstChild.style.removeProperty('visibility');
+  updateCSSColor();
+}
+
+function setBgColor(color) {
+  document.getElementById('bg' + screen.bgColor).firstChild.style.setProperty('visibility', 'hidden');
+  screen.bgColor = color;
+  document.getElementById('bg' + screen.bgColor).firstChild.style.removeProperty('visibility');
+  updateCSSColor();
+}
+
 function updatePills() {
   for (let i = 0; i < 16; i++) {
     let color = Hct.fromInt(argbFromHex(screen.colors[i]));
@@ -729,11 +750,7 @@ function updatePills() {
         screen.commitBuffer();
         render();
       } else {
-        let elt = document.getElementById('fg' + screen.fgColor);
-        elt.firstChild.style.setProperty('visibility', 'hidden');
-        screen.fgColor = i;
-        e.target.children[0].style.removeProperty('visibility');
-        updateCSSColor();
+        setFgColor(i);
       }
     }
     elt = document.getElementById("bg" + i);
@@ -759,11 +776,7 @@ function updatePills() {
         screen.commitBuffer();
         render();
       } else {
-        let elt = document.getElementById('bg' + screen.bgColor);
-        elt.firstChild.style.setProperty('visibility', 'hidden');
-        screen.bgColor = i;
-        e.target.children[0].style.removeProperty('visibility');
-        updateCSSColor();
+        setBgColor(i);
       }
     }
     if (color.tone <= 50) {
