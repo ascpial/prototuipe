@@ -947,7 +947,7 @@ function render() {
 
   if ((screen.interaction.mode == MODES.Selected || screen.interaction.mode == MODES.MovingSelection || screen.interaction.mode == MODES.Selecting)) {
     let [originX, originY, width, height] = select.getBoundingBox();
-    if (width == 1 || height == 1) {
+    if (width == 1 && height == 1) {
       let char = screen.get(originX, originY);
       if (char) {
         setLabel(
