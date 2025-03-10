@@ -1105,6 +1105,7 @@ document.getElementById('screen_panel').addEventListener("contextmenu", (event) 
 window.addEventListener("copy", (e) => {
   if (tool == TOOLS.Select && screen.interaction.mode == MODES.Selected) {
     e.preventDefault();
+    commitInteraction();
     let [originX, originY, width, height] = select.getBoundingBox();
     let img = bimgExport(screen, width, height, originX, originY);
     e.clipboardData.setData('text/plain', JSON.stringify(img));
