@@ -1,17 +1,9 @@
 import { SIZES, FONT, ScreenRenderer, COLOR_NAMES, DEFAULT_COLORS, SIZE_TYPES } from "./renderer.js";
-import { Hct, argbFromHex } from './utils.js';
+import { mcu } from './utils.js';
 import { TerminalScreen, bimgExport, bimgImport } from "./screen.js";
+import './projectcard.js';
 
-import { serialize } from './textutils.js';
-// 
-// console.log(serialize({
-//   'a': 1,
-//   'b': 4,
-//   'c': {
-//     'd': "abcd",
-//   },
-//   "hello world": 'hello \"world"',
-// }));
+import { serialize, unserialize } from './textutils.js';
 
 let sign = (a) => a > 0 ? 1 : -1;
 
@@ -721,7 +713,7 @@ function setBgColor(color) {
 
 function updatePills() {
   for (let i = 0; i < 16; i++) {
-    let color = Hct.fromInt(argbFromHex(screen.colors[i]));
+    let color = mcu.Hct.fromInt(mcu.argbFromHex(screen.colors[i]));
     let elt = document.getElementById("fg" + i);
     elt.style.setProperty("--md-filled-icon-button-container-color", screen.colors[i]);
     elt.style.setProperty("--md-filled-icon-button-disabled-container-color", screen.colors[i]);
@@ -1108,31 +1100,32 @@ window.addEventListener("copy", (e) => {
     commitInteraction();
     let [originX, originY, width, height] = select.getBoundingBox();
     let img = bimgExport(screen, width, height, originX, originY);
-    e.clipboardData.setData('text/plain', JSON.stringify(img));
+    e.clipboardData.setData('text/plain', serialize(img));
   }
 })
 window.addEventListener("paste", (e) => {
   e.preventDefault();
   let rawdata = e.clipboardData.getData('text/plain');
-  try {
-    let data = JSON.parse(rawdata);
-    let pos = screen.interaction.pos ? screen.interaction.pos : { x: 0, y: 0 };
-    setTool(TOOLS.Select);
-    let pastedScreen = bimgImport(data);
-    pastedScreen.commitBuffer();
-    screen.interaction = {
-      mode: MODES.Selected,
-      pos: pos,
-      point1: pos,
-      point2: { x: pos.x + pastedScreen.size.width - 1, y: pos.y + pastedScreen.size.height - 1 },
-      data: pastedScreen.screen,
-      area: pastedScreen.canvas,
-      offset: { x: 0, y: 0 },
-    }
-    render();
-  } catch {
-    console.log("data wasn't an image");
+  // try {
+  let data = unserialize(rawdata);
+  console.log(data);
+  let pos = screen.interaction.pos ? screen.interaction.pos : { x: 0, y: 0 };
+  setTool(TOOLS.Select);
+  let pastedScreen = bimgImport(data);
+  pastedScreen.commitBuffer();
+  screen.interaction = {
+    mode: MODES.Selected,
+    pos: pos,
+    point1: pos,
+    point2: { x: pos.x + pastedScreen.size.width - 1, y: pos.y + pastedScreen.size.height - 1 },
+    data: pastedScreen.screen,
+    area: pastedScreen.canvas,
+    offset: { x: 0, y: 0 },
   }
+  render();
+  // } catch {
+  //   console.log("data wasn't an image");
+  // }
 })
 
 if (FONT.complete) {
@@ -1335,42 +1328,41 @@ document.getElementById("reset_pcolor").onclick = () => {
   setSettingsPills();
 };
 
+function moveProject(sourceIndex, targetIndex) {
+  console.log(projects, sourceIndex, targetIndex);
+  let project = projects.splice(sourceIndex, 1)[0];
+  if (targetIndex > sourceIndex) {
+    targetIndex--;
+  }
+  projects.splice(targetIndex, 0, project);
+  console.log(projects);
+  saveProjects();
+  openProjects();
+}
+
 function openProjects() {
   let projectsCards = document.getElementById("project_cards");
   projectsCards.innerHTML = "";
-  projects.forEach((projectID) => {
-    let project = JSON.parse(window.localStorage.getItem("s" + projectID));
-    if (project) {
-      let card = document.createElement("div");
-      card.classList.add("project_card");
-      if (projectID == screen.id) {
-        card.classList.add("selected");
-      }
-      card.appendChild(document.createElement("md-ripple"));
-      let headline = document.createElement("div");
-      headline.classList.add("headline");
-      let name = document.createElement("label");
-      name.innerHTML = project.name;
-      name.classList.add("md-typescale-title-medium")
-      headline.append(name);
-      card.appendChild(headline);
-      let preview = document.createElement("div");
-      preview.classList.add("preview");
-      preview.style.setProperty("background-image", "url(" + project.preview + ")");
-      card.appendChild(preview);
-      card.addEventListener('click', () => {
-        openProject(projectID);
-        screen.render();
-        make_fit();
-        render();
-        updatePills();
-        document.getElementById('projects_dialog').close();
-      });
-      projectsCards.appendChild(card);
+  projects.forEach((projectID, projectIndex) => {
+    let projectcard = document.createElement("project-card");
+    projectcard.setAttribute("projectID", projectID);
+    projectcard.setAttribute("projectIndex", projectIndex);
+    if (projectID === screen.id) {
+      projectcard.classList.add("selected");
     }
+    projectsCards.appendChild(projectcard);
+    projectcard.addEventListener("click", (e) => {
+      openProject(projectID);
+      screen.render();
+      screen.save();
+      make_fit();
+      render();
+      document.getElementById('projects_dialog').close();
+    });
+    projectcard.setCallbacks(moveProject);
   });
   let newProject = document.createElement("div");
-  newProject.classList.add("project_card", "new_project");
+  newProject.classList.add("new_project");
   newProject.appendChild(document.createElement("md-ripple"));
   let newIcon = document.createElement("md-icon");
   newIcon.innerHTML = "add_circle";
@@ -1381,8 +1373,8 @@ function openProjects() {
       newProjectID = (Math.random() + 1).toString(36).substring(7);
     }
     openProject(newProjectID);
-    screen.save();
     screen.render();
+    screen.save();
     make_fit();
     render();
     document.getElementById('projects_dialog').close();

@@ -211,7 +211,7 @@ export function bimgExport(screen, width, height, x, y) {
       bg += screen.screen[i + y][j + x].bg.toString(16);
       fg += screen.screen[i + y][j + x].fg.toString(16);
     }
-    data[i] = [char, fg, bg]; // this is ugly and will be changed once bimg is fully supported
+    data[i] = [char, fg, bg];
   }
   let img = { 0: data };
   img.version = "1.0.0";
