@@ -379,6 +379,9 @@ let select = {
             fg: screen.fgColor,
             bg: screen.bgColor,
           }
+          if (x == 0 || y == 0 || x == screen.size.height - 1 || y == screen.size.width - 1) {
+            screen.drawChar(32, x, y, screen.fgColor, screen.bgColor);
+          }
         }
       }
       screen.commitBuffer(true, false);
