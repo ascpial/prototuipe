@@ -1,8 +1,10 @@
-# Prototuipe
+# <img src="./site/logo.svg" width="24px"/> Prototuipe
 
 Thanks to this image-editing like software, you can design interfaces and draw images for ComputerCraft with ease.
 
 ## Using the software
+
+You can [open the tool directly in you web browser](https://prototuipe.ascpial.fr).
 
 The following tools are available:
 
