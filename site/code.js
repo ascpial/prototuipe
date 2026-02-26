@@ -896,10 +896,16 @@ function commitInteraction() {
 }
 
 function undo() {
-  screen.interaction = { mode: MODES.Idle };
-  screen.clearBuffer();
-  screen.history.undo();
-  render();
+  if (screen.interaction.mode != MODES.Idle) {
+    screen.interaction = { mode: MODES.Idle };
+    screen.clearBuffer();
+    render();
+  } else {
+    screen.interaction = { mode: MODES.Idle };
+    screen.clearBuffer();
+    screen.history.undo();
+    render();
+  }
 }
 document.getElementById("undo").addEventListener('click', undo);
 
