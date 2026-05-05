@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> Prototuipe </title>
+
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="c"></canvas>
+<!--<script src="https://greggman.github.io/webgl-helpers/webgl-show-info.js"></script>-->
+<script id="vertex-shader-2d" type="notjs">#version 300 es
+	in vec4 a_position;
+	in uvec2 a_charpos;
+	in uvec3 a_chardata;
+
+	uniform vec2 u_resolution;
+	uniform sampler2D u_colors;
+
+	out vec2 v_texcoord;
+	flat out vec4 v_char_bg_color;
+	flat out vec4 v_char_fg_color;
+
+	// all shaders have a main function
+	void main() {
+		// calculate and pass color information to the fragment shader
+		v_char_bg_color = texelFetch(u_colors, ivec2(a_chardata[2], 0), 0);
+		v_char_fg_color = texelFetch(u_colors, ivec2(a_chardata[1], 0), 0);
+
+		uint x_char_position = a_charpos.x;
+		uint y_char_position = a_charpos.y;
+
+		// calculate on-screen coordinates
+    vec2 zeroToOne = vec2(a_position.x + float(x_char_position)*60.0, a_position.y + float(y_char_position)*90.0) / u_resolution;
+
+    // convert from 0->1 to 0->2
+    vec2 zeroToTwo = zeroToOne * 2.0;
+
+    // convert from 0->2 to -1->+1 (clip space)
+    vec2 clipSpace = zeroToTwo - 1.0;
+
+		// calculate texture coordinates based on the current character id
+		uint charid = a_chardata[0];
+		v_texcoord = vec2(
+		  (float(uint(1) + (charid % uint(16))*uint(8)) + a_position[2]*6.0) / 256.0,
+		  (float(uint(1) + (charid / uint(16))*uint(11)) + a_position[3]*9.0) / 256.0
+		 );
+
+		gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+	}
+</script>
+
+<script id="fragment-shader-2d" type="notjs">#version 300 es
+	precision mediump float;
+
+	uniform sampler2D u_texture;
+
+	in vec2 v_texcoord;
+	flat in vec4 v_char_bg_color;
+	flat in vec4 v_char_fg_color;
+
+	out vec4 pixelColor;
+
+	void main() {
+		vec4 fgColor = v_char_fg_color * texture(u_texture, v_texcoord);
+		//if (fgColor.a == 0.0) {
+		//	pixelColor = vec4(1.0, 0.0, 1.0, 1.0);
+		//} else {
+			vec4 unscaled = (fgColor * fgColor.a + v_char_bg_color * v_char_bg_color.a * (1.0 - fgColor.a));
+			float new_alpha = fgColor.a + v_char_fg_color.a * (1.0-fgColor.a);
+			vec4 scaled = unscaled / new_alpha;
+			pixelColor = vec4(scaled.r, scaled.g, scaled.b, new_alpha);
+		//}
+	}
+
+</script>
+
+<script src="dist/bundle.js"></script>
+</body>
+</html>

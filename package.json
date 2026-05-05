@@ -1,14 +1,33 @@
 {
+  "name": "prototuipe",
+  "version": "2.0.0",
+  "description": "Design ComputerCraft UIs with ease",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --open --config webpack.config.dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ascpial/prototuipe.git"
+  },
+  "author": "ascpial",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ascpial/prototuipe/issues"
+  },
+  "homepage": "https://github.com/ascpial/prototuipe#readme",
   "dependencies": {
-    "@material/material-color-utilities": "^0.3.0",
-    "@material/web": "^2.2.0",
-    "@rollup/plugin-node-resolve": "^15.3.0",
-    "lodash": "^4.17.21",
-    "luaparse": "^0.3.1",
-    "rollup": "^4.28.1"
+    "glslog": "^0.0.10",
+    "ts-loader": "^9.5.4",
+    "webgl-debug": "^2.0.1",
+    "webpack": "^5.105.3"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.3",
-    "@rollup/plugin-terser": "^0.4.4"
+    "@types/node": "^25.3.2",
+    "ts-node": "^10.9.2",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3"
   }
 }

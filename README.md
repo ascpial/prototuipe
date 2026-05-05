@@ -1,22 +1,21 @@
-# <img src="./site/logo.svg" width="24px"/> Prototuipe
+# Prototuipe v2
 
-Thanks to this image-editing like software, you can design interfaces and draw images for ComputerCraft with ease.
+This is the full rewrite of prototuipe, a webapp similar to GIMP for prototuipe.
 
-## Using the software
+The first version is great and I'm very proud of it. That said, its reliability and robustness is very surprising, considering the (lack of) design considerations and the overall code quality.
 
-You can [open the tool directly in you web browser](https://prototuipe.ascpial.fr).
+With this new version, I target:
 
-The following tools are available:
-
-- Place (n): allows you to place letters and symbols, selected in the right panel. You can drag to draw multiple symbols at once.
-  You can also press shift before starting to drag and draw lines.
-  Similarly, you can press ctrl to draw boxes.
-- Text (t): allows you to input text directly from you keyboard.
-  Press enter to write the text on the screen, shift enter to add a newline.
-- Select (s): allows you to move parts of the display, delete areas and copy-paste.
-  You can use delete, select characters and colors to apply a change to all the selection at once.
-  Drag the selection to move its content.
-  You can also use regular copy and past to duplicate areas, as well as share it in text form.
-- Draw (d) : allows you to edit subpixels.
-  You can use shift and ctrl to draw lines and boxes.
+- full compatibility and all the features of the previous version;
+- cleaner codebase with the help of typescript;
+- better touchpad support;
+- mobile support?;
+- improved performance when possible:
+  - more performant use of canvas (especially in Chrome) and possibly WebGL;
+  - lighter web page, by reducing the amount of dependencies and the size of assets.
+- more features, namely:
+  - custom fonts, which would've been hard to implement in the previous versions;
+  - folder-like project structure;
+  - saving history accross reloads;
+  - in the future, project sharing.
 
