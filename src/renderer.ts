@@ -1,4 +1,4 @@
-function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
+export function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
 	const dpr = window.devicePixelRatio;
 	const {width, height} = canvas.getBoundingClientRect();
 	const displayWidth = Math.round(width*dpr);
@@ -14,7 +14,7 @@ function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
 	return needResize;
 }
 
-function createShader(gl: WebGLRenderingContext, type: GLenum, source: string) {
+export function createShader(gl: WebGLRenderingContext, type: GLenum, source: string) {
 	const shader = gl.createShader(type);
 	gl.shaderSource(shader, source);
 	gl.compileShader(shader);
@@ -25,7 +25,7 @@ function createShader(gl: WebGLRenderingContext, type: GLenum, source: string) {
 	gl.deleteShader(shader);
 }
 
-function createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader) {
+export function createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader) {
 	const program = gl.createProgram();
 	gl.attachShader(program, vertexShader);
 	gl.attachShader(program, fragmentShader);
