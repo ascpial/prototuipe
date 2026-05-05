@@ -8,7 +8,7 @@ export default merge(common, {
 		liveReload: true,
 		hot: true,
 		open: true,
-		static: ['./'],
+		static: ['./dist'],
 	},
 });
 

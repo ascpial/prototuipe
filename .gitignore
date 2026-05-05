@@ -1,2 +1,4 @@
-node_modules
-site/
+node_modules/
+dist/bundle.js*
+.idea/
+.vscode/

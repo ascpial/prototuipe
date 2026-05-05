@@ -9,7 +9,6 @@ const __dirname = path.dirname(__filename);
 
 export default {
 	entry: './src/app.ts',
-	devtool: 'inline-source-map',
 	module: {
 		rules: [
 			{
@@ -25,6 +24,5 @@ export default {
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist'),
-		publicPath: "/dist/",
 	},
 };
